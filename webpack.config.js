@@ -1,30 +1,30 @@
-var path = require("path");
+const path = require('path');
 
 module.exports = {
-  entry: "./src/index.jsx",
+  entry: './src/index.jsx',
   output: {
-    path: path.join(__dirname, "dist", "assets"),
-    filename: "bundle.js"
+    path: path.join(__dirname, 'dist', 'assets'),
+    filename: 'bundle.js',
   },
   module: {
     rules: [
       {
         test: /\.jsx$/,
         exclude: /node-modules/,
-        loader: "babel-loader",
+        loader: 'babel-loader',
         options: {
-          plugins: ["@babel/plugin-transform-runtime"],
-        }
+          plugins: ['@babel/plugin-transform-runtime'],
+        },
       },
       {
         test: /\.css$/,
         exclude: /node-modules/,
-        use: ["style-loader", "css-loader"],
-      }
-    ]
+        use: ['style-loader', 'css-loader'],
+      },
+    ],
   },
   resolve: {
-    extensions: ["", ".js", ".jsx", ".json"]
+    extensions: ['', '.js', '.jsx', '.json'],
   },
-  devtool: "source-map"
+  devtool: 'source-map',
 };
