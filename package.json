@@ -7,7 +7,8 @@
     "start-server": "node backend/index.js",
     "sass": "sass src/index.scss:src/index.css --no-source-map",
     "build-dev": "webpack --mode development",
-    "build-prod": "webpack --mode production"
+    "build-prod": "webpack --mode production",
+    "heroku-postbuild": "npm install && npm run build-prod && npm run start-server"
   },
   "author": "",
   "license": "ISC",
