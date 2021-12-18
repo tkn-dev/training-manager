@@ -3,9 +3,9 @@ import React, { useEffect, useState } from 'react';
 export default function CreateExercise(onCreate = (f) => f) {
   const [message, setMessage] = useState();
   useEffect(() => {
-    fetch('http://localhost:3000/api')
+    fetch('/api')
       .then((res) => res.json())
-      .then((data) => setMessage(data.message));
+      .then((data) => setMessage(data));
   });
   return (
     <div className="App">
