@@ -16,20 +16,60 @@ const pool = mysql.createPool({
   queueLimit: 0,
 });
 
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, '../dist')));
 
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '../dist/index.html'));
 });
 
-app.get('/api', (req, res) => {
-  pool.query('SELECT 1 + 1 AS solution', (error, results) => {
+app.get('/exercises/api', (req, res) => {
+  pool.query('SELECT name FROM exercises;', (error, results) => {
     if (error) {
-      res.json(error);
+      console.log(error);
+      res.status(400);
+      res.json({ message: '取得に失敗しました。' });
     } else {
-      res.json(results[0].solution);
+      res.status(200);
+      res.json({
+        message: '取得に成功しました。',
+        result: results.map((result) => result.name),
+      });
     }
   });
+});
+
+app.post('/exercises/api', (req, res) => {
+  pool.query(
+    `INSERT INTO exercises (name) VALUES ('${req.body.name}');`,
+    (error) => {
+      if (error) {
+        console.log(error);
+        res.status(400);
+        res.json({ message: '登録に失敗しました。' });
+      } else {
+        res.status(201);
+        res.json({ message: '登録に成功しました。' });
+      }
+    },
+  );
+});
+
+app.delete('/exercise/api', (req, res) => {
+  pool.query(
+    `DELETE FROM exercises WHERE name = '${req.body.name}';`,
+    (error) => {
+      if (error) {
+        console.log(error);
+        res.status(400);
+        res.json({ message: '削除に失敗しました。' });
+      } else {
+        res.status(201);
+        res.json({ message: '削除に成功しました。' });
+      }
+    },
+  );
 });
 
 app.get('*', (req, res) => {

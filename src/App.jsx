@@ -1,10 +1,14 @@
 import React from 'react';
-import CreateExercise from './features/CreateExercise';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import ExercisesIndex from './features/exercises/ExercisesIndex';
 
 export default function App() {
   return (
-    <div>
-      <CreateExercise />
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<ExercisesIndex />} />
+        <Route path="*" element={<ExercisesIndex />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
