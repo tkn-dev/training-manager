@@ -14,5 +14,6 @@ module.exports = {
   plugins: ['react'],
   rules: {
     'react/function-component-definition': 'off',
+    'implicit-arrow-linebreak': 'disable',
   },
 };
