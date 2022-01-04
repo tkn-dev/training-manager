@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useEffect, useMemo } from 'react';
 import CreateExercise from './CreateExercise';
 import ShowExercises from './ShowExercises';
 
@@ -25,10 +25,11 @@ export default function ExercisesIndex() {
     })
       .then((res) => res.json())
       .then((data) => setMessage(data.message));
+    getExercises();
   });
 
   const deleteExercise = (exerciseName) => {
-    fetch('exercise/api', {
+    fetch('exercises/api', {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
@@ -39,15 +40,12 @@ export default function ExercisesIndex() {
     })
       .then((res) => res.json())
       .then((data) => setMessage(data.message));
+    getExercises();
   };
 
   useEffect(() => {
     getExercises();
   }, []);
-
-  useEffect(() => {
-    getExercises();
-  }, [exerciseList]);
 
   return (
     <>
