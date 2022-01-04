@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node backend/index.js",
+    "start": "node backend/server.js",
     "sass": "sass src/index.scss:src/index.css --no-source-map",
     "build-dev": "webpack --mode development",
     "build-prod": "webpack --mode production",
@@ -15,6 +15,7 @@
   "dependencies": {
     "@babel/runtime": "^7.16.3",
     "express": "^4.17.1",
+    "log4js": "^6.3.0",
     "mysql2": "^2.3.3",
     "prop-types": "^15.7.2",
     "react": "^17.0.2",
