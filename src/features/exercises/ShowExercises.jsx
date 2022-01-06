@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import DeleteItem from './DeleteItem';
+import DeleteItem from '../../components/elements/button/DeleteItem';
 
 export default function ShowExercises({ exerciseList, onDelete }) {
   const iterateList = exerciseList.map((exercise, i) => (
