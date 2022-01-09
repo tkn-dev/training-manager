@@ -14,18 +14,28 @@ const sideMenu = css({
   lineHeight: '5',
 });
 
+const link = css({
+  pointerEvents: 'auto',
+});
+
 export default function SideMenu() {
   return (
     <nav css={sideMenu}>
       <ol>
         <li>
-          <a href="#">種目登録</a>
+          <a css={link} href="/exercises">
+            種目登録
+          </a>
         </li>
         <li>
-          <a href="#">記録入力</a>
+          <a css={link} href="records">
+            記録入力
+          </a>
         </li>
         <li>
-          <a href="#">履歴</a>
+          <a css={link} href="histories">
+            履歴
+          </a>
         </li>
       </ol>
     </nav>

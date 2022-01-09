@@ -110,6 +110,7 @@ body {
   color: #333;
   font-size: 1.2rem;
   font-family: "Hiragino Kaku Gothic ProN", "Meyrio", sans-serif;
+  pointer-events: none;
 }
 
 *,
