@@ -8,8 +8,9 @@ import ExercisesIndex from './features/exercises/ExercisesIndex';
 import RecordsIndex from './features/records/RecordsIndex';
 import HistoriesIndex from './features/histories/HistoriesIndex';
 
-const temp = css({
+const main = css({
   marginLeft: '80px',
+  pointerEvents: 'auto',
 });
 
 export default function App() {
@@ -17,7 +18,7 @@ export default function App() {
     <>
       <Header />
       <SideMenu />
-      <main css={temp}>
+      <main css={main}>
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<ExercisesIndex />} />
