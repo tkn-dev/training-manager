@@ -103,6 +103,7 @@ input, select {
 html {
   height: 100%;
   font-size: 62.5%;
+  pointer-events: none;
 }
 
 body {
@@ -125,4 +126,5 @@ body {
 
 #root {
   height: 100%;
+  pointer-events: auto;
 }

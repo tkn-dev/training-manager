@@ -23,5 +23,5 @@ app.get('*', (req, res) => {
 });
 
 app.listen(port, () => {
-  systemLogger.info(log.INF.SERVER_STARTED, port);
+  systemLogger.info(log.INF_MSG.SERVER_STARTED, port);
 });

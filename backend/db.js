@@ -11,6 +11,6 @@ const pool = mysql.createPool({
   connectionLimit: 10,
   queueLimit: 0,
 });
-systemLogger.info(log.INF.DB_CONNECTED);
+systemLogger.info(log.INF_MSG.DB_CONNECTED);
 
 module.exports = pool;
