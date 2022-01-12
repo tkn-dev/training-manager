@@ -48,11 +48,11 @@ export default function ExercisesIndex() {
   }, []);
 
   return (
-    <>
+    <section>
       <h1>種目登録</h1>
       <p>{message}</p>
       <CreateExercise onSubmit={insertExercise} />
       <ShowExercises exerciseList={exerciseList} onDelete={deleteExercise} />
-    </>
+    </section>
   );
 }
