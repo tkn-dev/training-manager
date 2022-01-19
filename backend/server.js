@@ -3,7 +3,7 @@ const express = require('express');
 const path = require('path');
 const systemLogger = require('./log/systemLogger');
 const log = require('./log/constants');
-const exerciseRouter = require('./routes/exercise');
+const exerciseRouter = require('./routes/exercises');
 
 const app = express();
 const port = process.env.PORT || 3000;

@@ -13,7 +13,7 @@ export default function ExercisesIndex() {
 
   const updateList = useCallback(async () => {
     const res = await getExercises();
-    setExerciseList(res.result);
+    setExerciseList(res.results.map((result) => result.name));
   });
 
   const insertExercise = useCallback(async (exerciseName) => {

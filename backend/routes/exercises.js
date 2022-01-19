@@ -7,7 +7,7 @@ const commonFunc = require('../common');
 
 const router = express.Router();
 
-const selectAll = 'SELECT name FROM exercises;';
+const selectAll = 'SELECT id, name, is_aerobic FROM exercises;';
 const addExercise = (name) =>
   `INSERT INTO exercises (name) VALUES ('${name}');`;
 const deleteExercise = (name) =>
@@ -25,7 +25,7 @@ router.get('/api', (req, res) => {
       res.status(200);
       res.json({
         message: '取得に成功しました。',
-        result: results.map((result) => result.name),
+        results: results,
       });
     }
   });
