@@ -4,6 +4,7 @@ const path = require('path');
 const systemLogger = require('./log/systemLogger');
 const log = require('./log/constants');
 const exerciseRouter = require('./routes/exercises');
+const recordRouter = require('./routes/records');
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -13,6 +14,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, '../dist')));
 
 app.use('/exercises', exerciseRouter);
+app.use('/records', recordRouter);
 
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '../dist/index.html'));

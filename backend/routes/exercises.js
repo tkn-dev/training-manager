@@ -3,7 +3,7 @@ const express = require('express');
 const pool = require('../db');
 const systemLogger = require('../log/systemLogger');
 const log = require('../log/constants');
-const commonFunc = require('../common');
+const isOnlySpace = require('../util/isOnlySpace');
 
 const router = express.Router();
 
@@ -32,8 +32,8 @@ router.get('/api', (req, res) => {
 });
 
 router.post('/api', (req, res) => {
-  systemLogger.debug(log.DBG_MSG.FUNC_EXEC, commonFunc.isOnlySpace.name);
-  const temp = commonFunc.isOnlySpace(req.body.name);
+  systemLogger.debug(log.DBG_MSG.FUNC_EXEC, isOnlySpace.name);
+  const temp = isOnlySpace(req.body.name);
   systemLogger.debug(log.DBG_MSG.FUNC_RESULT, temp);
   if (temp) {
     res.status(400);

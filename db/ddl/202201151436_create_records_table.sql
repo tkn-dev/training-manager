@@ -4,7 +4,7 @@ CREATE TABLE training_manager.records(
   exercise VARCHAR(30) NOT NULL,
   weight_kg DECIMAL(5,2),
   weight_lb DECIMAL(6,2),
-  repetiion INT,
+  repetition INT,
   is_supported BOOLEAN,
   left_or_right ENUM('none', 'left', 'right'),
   distance_km DECIMAL(6,3),
