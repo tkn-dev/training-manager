@@ -2,8 +2,7 @@ const express = require('express');
 const pool = require('../db');
 const systemLogger = require('../log/systemLogger');
 const log = require('../log/constants');
-const addSingleQuote = require('../util/addSingleQuote');
-const needsQuote = require('../util/needsQuote');
+const createValue = require('../util/createValue');
 
 const router = express.Router();
 
@@ -21,29 +20,18 @@ const recordsType = {
   memo: 'varchar',
 };
 
-const addRecord = (colList, valList) =>
-  `INSERT INTO records (${colList}) VALUES (${valList});`;
+const addRecord = (colName, value) => `INSERT INTO records (${colName}) VALUES (${value});`;
 
 router.post('/api', (req, res) => {
-  const colList = Object.keys(req.body).join(',');
-  const valList = Object.keys(req.body)
-    .map((key) => {
-      console.log(key + ':' + req.body[key] + ':' + recordsType[key]);
-      if (req.body[key] !== false && !req.body[key]) {
-        return 'null';
-      }
-      if (needsQuote(recordsType[key])) {
-        return addSingleQuote(req.body[key]);
-      } else {
-        return req.body[key];
-      }
-    })
-    .join(',');
-  systemLogger.debug(log.DBG_MSG.QUERY_EXEC, addRecord(colList, valList));
-  pool.query(addRecord(colList, valList), (error, results) => {
+  const colName = Object.keys(req.body).join(',');
+  systemLogger.debug(log.DBG_MSG.FUNC_EXEC, createValue.name);
+  systemLogger.debug(log.DBG_MSG.FUNC_RESULT, createValue(req.body, recordsType));
+  const value = createValue(req.body, recordsType);
+  systemLogger.debug(log.DBG_MSG.QUERY_EXEC, addRecord(colName, value));
+  pool.query(addRecord(colName, value), (error, results) => {
     systemLogger.debug(log.DBG_MSG.QUERY_RESULT, results);
     if (error) {
-      console.log(error);
+      systemLogger.error(error);
       res.status(400);
       return res.json({ message: '登録に失敗しました。' });
     } else {

@@ -5,5 +5,9 @@ export const postRecord = (record) => {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(record),
-  }).then((res) => res.json());
+  }).then(async (res) => {
+    const ret = await res.json();
+    ret.status = res.status;
+    return ret;
+  });
 };

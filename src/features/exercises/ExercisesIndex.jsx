@@ -1,11 +1,7 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import CreateExercise from './CreateExercise';
 import ShowExercises from './ShowExercises';
-import {
-  getExercises,
-  postExercise,
-  deleteExercise,
-} from '../../api/exercises';
+import { getExercises, postExercise, deleteExercise } from '../../api/exercises';
 
 export default function ExercisesIndex() {
   const [message, setMessage] = useState();
@@ -16,10 +12,11 @@ export default function ExercisesIndex() {
     setExerciseList(res.results.map((result) => result.name));
   });
 
-  const insertExercise = useCallback(async (exerciseName) => {
-    const res = await postExercise(exerciseName);
+  const insertExercise = useCallback(async (exercise) => {
+    const res = await postExercise(exercise);
     setMessage(res.message);
     updateList();
+    return res;
   });
 
   const removeExercise = useCallback(async (exerciseName) => {

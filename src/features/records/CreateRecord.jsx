@@ -3,6 +3,8 @@ import { css, jsx } from '@emotion/react';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
 import PulldownMenu from '../../components/elements/form/PulldownMenu';
+import { getActualMaxDate } from '../../util/getActualMaxDate';
+import { zeroPadding } from '../../util/zeroPadding';
 
 const container = css({
   display: 'flex',
@@ -19,17 +21,12 @@ export default function CreateRecord({ exerciseList, onSubmit }) {
   const [month, setMonth] = useState(currentDate.getMonth() + 1);
   const [date, setDate] = useState(currentDate.getDate());
   const [dateList, setDateList] = useState([]);
+  const [exerciseMessage, setExerciseMessage] = useState();
+  const [weightMessage, setWeightMessage] = useState();
+  const [repetitionMessage, setRepetitionMessage] = useState();
+  const [result, setResult] = useState();
 
   const yearList = useMemo(() => [-2, -1, 0, 1, 2].map((i) => year + i), []);
-
-  const createDateList = () => {
-    const days = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-    if (month === 2 && year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0)) {
-      return [...Array(27)].map((_, i) => i + 1);
-    } else {
-      return [...Array(days[month - 1])].map((_, i) => i + 1);
-    }
-  };
 
   const onChangeYear = useCallback(() => {
     setYear(Math.trunc(Number(document.getElementById('exerciseDateYear').value)));
@@ -44,7 +41,7 @@ export default function CreateRecord({ exerciseList, onSubmit }) {
   });
 
   useEffect(() => {
-    setDateList(createDateList());
+    setDateList([...Array(getActualMaxDate(year, month))].map((_, i) => i + 1));
   }, [month]);
 
   useEffect(() => {
@@ -52,6 +49,13 @@ export default function CreateRecord({ exerciseList, onSubmit }) {
       document.getElementById('exerciseDateDate').value = date;
     }
   }, [dateList]);
+
+  useEffect(() => {
+    document.getElementById('exercise').value = '';
+    document.getElementById('weightKg').value = '';
+    document.getElementById('weightLb').value = '';
+    document.getElementById('repetition').value = '';
+  }, [result]);
 
   return (
     <div css={container}>
@@ -82,22 +86,25 @@ export default function CreateRecord({ exerciseList, onSubmit }) {
       <label css={inputLabel} htmlFor="exercise">
         種目
         <PulldownMenu
-          itemList={exerciseList.map((exercise) => exercise.name)}
+          itemList={['', ...exerciseList.map((exercise) => exercise.name)]}
           name={'exercise'}
           id={'exercise'}
         />
+        <p id="exerciseMessage">{exerciseMessage}</p>
       </label>
 
       <label css={inputLabel} htmlFor="weight">
         重さ
         {/* Todo kgとlbのどちらを使うか選べるようにする */}
         <input type="number" name="weight" id="weightKg" min="0" />
-        <input type="number" name="weight" id="weightLb" min="0" defaultValue={0} hidden />
+        <input type="number" name="weight" id="weightLb" min="0" hidden />
+        <p id="weightMessage">{weightMessage}</p>
       </label>
 
       <label css={inputLabel} htmlFor="repetition">
         回数
         <input type="number" name="repetition" id="repetition" min="0" />
+        <p id="repetitionMessage">{repetitionMessage}</p>
       </label>
 
       <label css={inputLabel} htmlFor="memo">
@@ -125,18 +132,16 @@ export default function CreateRecord({ exerciseList, onSubmit }) {
       <button
         type="submit"
         onClick={() => {
+          setExerciseMessage(null);
+          setWeightMessage(null);
+          setRepetitionMessage(null);
+          let isValid = true;
+
           const getLeftOrRight = () => {
             const elements = document.getElementsByName('leftOrRight');
             for (let i = 0; i < elements.length; i++) {
               if (elements.item(i).checked) return elements.item(i).value;
             }
-          };
-          const zeroPadding = (num, digit) => {
-            const ret = num.toString();
-            if (ret.length < digit) {
-              return [...Array(digit - ret.length)].reduce((prev) => '0' + prev, num);
-            }
-            return ret;
           };
           const record = {
             exercise_date:
@@ -153,7 +158,21 @@ export default function CreateRecord({ exerciseList, onSubmit }) {
             distance_km: null,
             distance_mile: null,
           };
-          onSubmit(record);
+          if (!record.exercise) {
+            setExerciseMessage('種目を選択して下さい。');
+            isValid = false;
+          }
+          if (!record.weight_kg) {
+            setWeightMessage('重さを入力して下さい。');
+            isValid = false;
+          }
+          if (!record.repetition) {
+            setRepetitionMessage('回数を入力してください。');
+            isValid = false;
+          }
+          if (isValid) {
+            onSubmit(record).then(async (res) => await setResult(res.status));
+          }
         }}
       >
         submit

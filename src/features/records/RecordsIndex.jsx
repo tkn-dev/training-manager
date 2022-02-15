@@ -15,6 +15,7 @@ export default function RecordsIndex() {
   const insertRecord = async (record) => {
     const res = await postRecord(record);
     setMessage(res.message);
+    return res;
   };
 
   useEffect(() => {
@@ -25,10 +26,7 @@ export default function RecordsIndex() {
     <section>
       <h1>記録入力</h1>
       <p>{message}</p>
-      <CreateRecord
-        exerciseList={exerciseList}
-        onSubmit={insertRecord}
-      ></CreateRecord>
+      <CreateRecord exerciseList={exerciseList} onSubmit={insertRecord}></CreateRecord>
     </section>
   );
 }
