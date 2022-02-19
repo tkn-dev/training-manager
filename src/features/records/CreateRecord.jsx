@@ -2,9 +2,11 @@
 import { css, jsx } from '@emotion/react';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
+import AnaerobicFrom from './AnaerobicForm';
 import PulldownMenu from '../../components/elements/form/PulldownMenu';
 import { getActualMaxDate } from '../../util/getActualMaxDate';
 import { zeroPadding } from '../../util/zeroPadding';
+import AerobicForm from './AerobicForm';
 
 const container = css({
   display: 'flex',
@@ -20,11 +22,16 @@ export default function CreateRecord({ exerciseList, onSubmit }) {
   const [year, setYear] = useState(currentDate.getFullYear());
   const [month, setMonth] = useState(currentDate.getMonth() + 1);
   const [date, setDate] = useState(currentDate.getDate());
+  const [exercise, setExercise] = useState();
   const [dateList, setDateList] = useState([]);
+  const [isAerobic, setIsAerobic] = useState(false);
+  const [result, setResult] = useState();
+
   const [exerciseMessage, setExerciseMessage] = useState();
   const [weightMessage, setWeightMessage] = useState();
   const [repetitionMessage, setRepetitionMessage] = useState();
-  const [result, setResult] = useState();
+  const [distanceMessage, setDistanceMessage] = useState();
+  const [runTimeMessage, setRunTimeMessage] = useState();
 
   const yearList = useMemo(() => [-2, -1, 0, 1, 2].map((i) => year + i), []);
 
@@ -40,6 +47,18 @@ export default function CreateRecord({ exerciseList, onSubmit }) {
     setDate(Math.trunc(Number(document.getElementById('exerciseDateDate').value)));
   });
 
+  const onChangeExercise = useCallback(() => {
+    setExercise(document.getElementById('exercise').value);
+  });
+
+  const resetMessage = () => {
+    setExerciseMessage(null);
+    setWeightMessage(null);
+    setRepetitionMessage(null);
+    setDistanceMessage(null);
+    setRunTimeMessage(null);
+  };
+
   useEffect(() => {
     setDateList([...Array(getActualMaxDate(year, month))].map((_, i) => i + 1));
   }, [month]);
@@ -51,10 +70,21 @@ export default function CreateRecord({ exerciseList, onSubmit }) {
   }, [dateList]);
 
   useEffect(() => {
-    document.getElementById('exercise').value = '';
-    document.getElementById('weightKg').value = '';
-    document.getElementById('weightLb').value = '';
-    document.getElementById('repetition').value = '';
+    resetMessage();
+    for (let exerciseObj of exerciseList) {
+      if (exerciseObj.name === exercise) {
+        setIsAerobic(!!exerciseObj.is_aerobic);
+        break;
+      }
+    }
+  }, [exercise]);
+
+  useEffect(() => {
+    ['exercise', 'weightKg', 'weightLb', 'repetition', 'distanceKm', 'distanceMile', 'runTime'].map(
+      (item) => {
+        document.getElementById(item).value = '';
+      },
+    );
   }, [result]);
 
   return (
@@ -86,26 +116,24 @@ export default function CreateRecord({ exerciseList, onSubmit }) {
       <label css={inputLabel} htmlFor="exercise">
         種目
         <PulldownMenu
-          itemList={['', ...exerciseList.map((exercise) => exercise.name)]}
+          itemList={['', ...exerciseList.map((exerciseObj) => exerciseObj.name)]}
           name={'exercise'}
           id={'exercise'}
+          onChange={onChangeExercise}
         />
         <p id="exerciseMessage">{exerciseMessage}</p>
       </label>
 
-      <label css={inputLabel} htmlFor="weight">
-        重さ
-        {/* Todo kgとlbのどちらを使うか選べるようにする */}
-        <input type="number" name="weight" id="weightKg" min="0" />
-        <input type="number" name="weight" id="weightLb" min="0" hidden />
-        <p id="weightMessage">{weightMessage}</p>
-      </label>
-
-      <label css={inputLabel} htmlFor="repetition">
-        回数
-        <input type="number" name="repetition" id="repetition" min="0" />
-        <p id="repetitionMessage">{repetitionMessage}</p>
-      </label>
+      <AerobicForm
+        distanceMessage={distanceMessage}
+        runTimeMessage={runTimeMessage}
+        isHidden={!isAerobic}
+      />
+      <AnaerobicFrom
+        weightMessage={weightMessage}
+        repetitionMessage={repetitionMessage}
+        isHidden={isAerobic}
+      />
 
       <label css={inputLabel} htmlFor="memo">
         メモ
@@ -132,9 +160,7 @@ export default function CreateRecord({ exerciseList, onSubmit }) {
       <button
         type="submit"
         onClick={() => {
-          setExerciseMessage(null);
-          setWeightMessage(null);
-          setRepetitionMessage(null);
+          resetMessage();
           let isValid = true;
 
           const getLeftOrRight = () => {
@@ -152,6 +178,9 @@ export default function CreateRecord({ exerciseList, onSubmit }) {
             weight_kg: document.getElementById('weightKg').value,
             weight_lb: document.getElementById('weightLb').value,
             repetition: document.getElementById('repetition').value,
+            distance_km: document.getElementById('distanceKm').value,
+            distance_mile: document.getElementById('distanceMile').value,
+            run_time: document.getElementById('runTime').value,
             memo: document.getElementById('memo').value,
             is_supported: document.getElementById('support').checked,
             left_or_right: getLeftOrRight(),
@@ -162,12 +191,20 @@ export default function CreateRecord({ exerciseList, onSubmit }) {
             setExerciseMessage('種目を選択して下さい。');
             isValid = false;
           }
-          if (!record.weight_kg) {
+          if (!record.weight_kg && !record.weight_lb && !isAerobic) {
             setWeightMessage('重さを入力して下さい。');
             isValid = false;
           }
-          if (!record.repetition) {
+          if (!record.repetition && !isAerobic) {
             setRepetitionMessage('回数を入力してください。');
+            isValid = false;
+          }
+          if (!record.distance_km && !record.distance_mile && isAerobic) {
+            setDistanceMessage('距離を入力してください。');
+            isValid = false;
+          }
+          if (!record.run_time && isAerobic) {
+            setRunTimeMessage('時間を入力してください。');
             isValid = false;
           }
           if (isValid) {
