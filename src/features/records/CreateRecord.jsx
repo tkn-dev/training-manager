@@ -1,76 +1,84 @@
 /** @jsx jsx */
 import { css, jsx } from '@emotion/react';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import AnaerobicFrom from './AnaerobicForm';
-import PulldownMenu from '../../components/elements/form/PulldownMenu';
-import { getActualMaxDate } from '../../util/getActualMaxDate';
-import { zeroPadding } from '../../util/zeroPadding';
 import AerobicForm from './AerobicForm';
+import AnaerobicFrom from './AnaerobicForm';
+import { zeroPadding } from '../../util/zeroPadding';
+import SelectExerciseForm from './SelectExerciseForm';
 
 const container = css({
   display: 'flex',
   flexWrap: 'wrap',
 });
-
-const inputLabel = css({
+const formContainer = css({
+  display: 'flex',
+  flexWrap: 'wrap',
   width: '100%',
+  marginTop: '10px',
+});
+const formTitle = css({
+  width: '100%',
+});
+const inputContainer = css({
+  display: 'flex',
+  marginTop: '10px',
+});
+const submitButton = css({
+  marginTop: '20px',
 });
 
 export default function CreateRecord({ exerciseList, onSubmit }) {
-  const currentDate = new Date();
-  const [year, setYear] = useState(currentDate.getFullYear());
-  const [month, setMonth] = useState(currentDate.getMonth() + 1);
-  const [date, setDate] = useState(currentDate.getDate());
+  const defaultSelectedNum = 2;
+
   const [exercise, setExercise] = useState();
-  const [dateList, setDateList] = useState([]);
   const [isAerobic, setIsAerobic] = useState(false);
-  const [result, setResult] = useState();
-
+  const [selectedSetNum, setSelectedSetNumber] = useState(defaultSelectedNum);
+  const [recordFrom, setRecordFrom] = useState();
+  const [response, setResponse] = useState();
   const [exerciseMessage, setExerciseMessage] = useState();
-  const [weightMessage, setWeightMessage] = useState();
-  const [repetitionMessage, setRepetitionMessage] = useState();
-  const [distanceMessage, setDistanceMessage] = useState();
-  const [runTimeMessage, setRunTimeMessage] = useState();
 
-  const yearList = useMemo(() => [-2, -1, 0, 1, 2].map((i) => year + i), []);
-
-  const onChangeYear = useCallback(() => {
-    setYear(Math.trunc(Number(document.getElementById('exerciseDateYear').value)));
+  const createAerobicForm = useCallback(() => {
+    return (
+      <div css={formContainer}>
+        <div css={inputContainer}>
+          <AerobicForm />
+        </div>
+      </div>
+    );
   });
 
-  const onChangeMonth = useCallback(() => {
-    setMonth(Math.trunc(Number(document.getElementById('exerciseDateMonth').value)));
+  const createAnaerobicForm = useCallback((setNum) => {
+    return [...Array(setNum)].map((_, i) => {
+      return (
+        <div css={formContainer} id={`formContainer${i + 1}`} key={i}>
+          <h2 css={formTitle}>{`セット${i + 1}`}</h2>
+          <div css={inputContainer}>
+            <AnaerobicFrom setNum={i + 1} />
+          </div>
+        </div>
+      );
+    });
   });
 
-  const onChangeDate = useCallback(() => {
-    setDate(Math.trunc(Number(document.getElementById('exerciseDateDate').value)));
-  });
-
-  const onChangeExercise = useCallback(() => {
-    setExercise(document.getElementById('exercise').value);
-  });
-
-  const resetMessage = () => {
-    setExerciseMessage(null);
-    setWeightMessage(null);
-    setRepetitionMessage(null);
-    setDistanceMessage(null);
-    setRunTimeMessage(null);
-  };
-
-  useEffect(() => {
-    setDateList([...Array(getActualMaxDate(year, month))].map((_, i) => i + 1));
-  }, [month]);
-
-  useEffect(() => {
-    if (dateList.includes(date)) {
-      document.getElementById('exerciseDateDate').value = date;
+  const hideAnaerobicFormContainer = useCallback((setNum) => {
+    for (let i = 10; i > setNum; i--) {
+      const style = document.getElementById(`formContainer${i}`).style;
+      style.visibility = 'hidden';
+      style.margin = '0';
+      style.height = '0';
     }
-  }, [dateList]);
+  });
 
+  // 種目切替時の有酸素フラグ更新
   useEffect(() => {
-    resetMessage();
+    setExerciseMessage(null);
+    if (!exercise) {
+      setIsAerobic(null);
+      setSelectedSetNumber(0);
+      setRecordFrom(null);
+      return;
+    }
     for (let exerciseObj of exerciseList) {
       if (exerciseObj.name === exercise) {
         setIsAerobic(!!exerciseObj.is_aerobic);
@@ -79,136 +87,111 @@ export default function CreateRecord({ exerciseList, onSubmit }) {
     }
   }, [exercise]);
 
+  // 有酸素フラグ切替時のフォーム切替処理
   useEffect(() => {
-    ['exercise', 'weightKg', 'weightLb', 'repetition', 'distanceKm', 'distanceMile', 'runTime'].map(
-      (item) => {
-        document.getElementById(item).value = '';
-      },
-    );
-  }, [result]);
+    if (isAerobic) {
+      setSelectedSetNumber(1);
+      setRecordFrom(createAerobicForm());
+    } else if (!isAerobic && exercise) {
+      setSelectedSetNumber(defaultSelectedNum);
+      setRecordFrom(createAnaerobicForm(10));
+    }
+  }, [isAerobic]);
+
+  // セット数増減時の無酸素フォーム増減処理
+  useEffect(() => {
+    if (recordFrom && !isAerobic) hideAnaerobicFormContainer(selectedSetNum);
+  }, [selectedSetNum]);
+
+  // フォームのリセット処理
+  useEffect(() => {}, [response]);
 
   return (
     <div css={container}>
-      <label css={inputLabel} htmlFor="exerciseDate">
-        日付
-        <PulldownMenu
-          itemList={yearList}
-          name={'exerciseDate'}
-          id={'exerciseDateYear'}
-          defaultValue={year}
-          onChange={onChangeYear}
-        />
-        <PulldownMenu
-          itemList={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]}
-          name={'exerciseDate'}
-          id={'exerciseDateMonth'}
-          defaultValue={month}
-          onChange={onChangeMonth}
-        />
-        <PulldownMenu
-          itemList={dateList}
-          name={'exerciseDate'}
-          id={'exerciseDateDate'}
-          onChange={onChangeDate}
-        />
-      </label>
-
-      <label css={inputLabel} htmlFor="exercise">
-        種目
-        <PulldownMenu
-          itemList={['', ...exerciseList.map((exerciseObj) => exerciseObj.name)]}
-          name={'exercise'}
-          id={'exercise'}
-          onChange={onChangeExercise}
-        />
-        <p id="exerciseMessage">{exerciseMessage}</p>
-      </label>
-
-      <AerobicForm
-        distanceMessage={distanceMessage}
-        runTimeMessage={runTimeMessage}
-        isHidden={!isAerobic}
-      />
-      <AnaerobicFrom
-        weightMessage={weightMessage}
-        repetitionMessage={repetitionMessage}
-        isHidden={isAerobic}
+      <SelectExerciseForm
+        exerciseList={exerciseList}
+        setExercise={setExercise}
+        exerciseMessage={exerciseMessage}
       />
 
-      <label css={inputLabel} htmlFor="memo">
-        メモ
-        <input type="text" name="memo" id="memo" />
-      </label>
-
-      <label css={inputLabel} htmlFor="support">
-        補助
-        <input type="checkbox" name="support" id="support" />
-      </label>
-
-      <label css={inputLabel} htmlFor="leftOrRight">
-        左右
-        <div>
-          <input type="radio" name="leftOrRight" id="left" defaultValue={'left'} />
-          <label htmlFor="left">左</label>
-          <input type="radio" name="leftOrRight" id="none" defaultValue={'none'} defaultChecked />
-          <label htmlFor="none">未指定</label>
-          <input type="radio" name="leftOrRight" id="right" defaultValue={'right'} />
-          <label htmlFor="right">右</label>
-        </div>
-      </label>
+      {recordFrom}
 
       <button
         type="submit"
+        css={submitButton}
         onClick={() => {
-          resetMessage();
+          setExerciseMessage();
           let isValid = true;
 
-          const getLeftOrRight = () => {
-            const elements = document.getElementsByName('leftOrRight');
+          const setMessage = (id, setNum, message) => {
+            document.getElementById(`${id}${setNum}`).innerHTML = message;
+          };
+
+          const getLeftOrRight = (setNum) => {
+            const elements = document.getElementsByName(`leftOrRight${setNum}`);
             for (let i = 0; i < elements.length; i++) {
               if (elements.item(i).checked) return elements.item(i).value;
             }
           };
-          const record = {
-            exercise_date:
-              document.getElementById('exerciseDateYear').value +
-              zeroPadding(document.getElementById('exerciseDateMonth').value, 2) +
-              zeroPadding(document.getElementById('exerciseDateDate').value, 2),
-            exercise: document.getElementById('exercise').value,
-            weight_kg: document.getElementById('weightKg').value,
-            weight_lb: document.getElementById('weightLb').value,
-            repetition: document.getElementById('repetition').value,
-            distance_km: document.getElementById('distanceKm').value,
-            distance_mile: document.getElementById('distanceMile').value,
-            run_time: document.getElementById('runTime').value,
-            memo: document.getElementById('memo').value,
-            is_supported: document.getElementById('support').checked,
-            left_or_right: getLeftOrRight(),
-            distance_km: null,
-            distance_mile: null,
-          };
-          if (!record.exercise) {
+
+          if (!document.getElementById('exercise').value) {
             setExerciseMessage('種目を選択して下さい。');
-            isValid = false;
+            return;
           }
-          if (!record.weight_kg && !record.weight_lb && !isAerobic) {
-            setWeightMessage('重さを入力して下さい。');
-            isValid = false;
-          }
-          if (!record.repetition && !isAerobic) {
-            setRepetitionMessage('回数を入力してください。');
-            isValid = false;
-          }
-          if (!record.distance_km && !record.distance_mile && isAerobic) {
-            setDistanceMessage('距離を入力してください。');
-            isValid = false;
-          }
-          if (!record.run_time && isAerobic) {
-            setRunTimeMessage('時間を入力してください。');
-            isValid = false;
-          }
+
+          const records = [...Array(selectedSetNum)].map((_, i) => {
+            const setNum = i + 1;
+            let record = {
+              exercise_date:
+                document.getElementById('exerciseDateYear').value +
+                zeroPadding(document.getElementById('exerciseDateMonth').value, 2) +
+                zeroPadding(document.getElementById('exerciseDateDate').value, 2),
+              exercise: document.getElementById('exercise').value,
+              set_number: setNum,
+            };
+            if (isAerobic) {
+              record = {
+                ...record,
+                distance_km: document.getElementById('distanceKm').value,
+                distance_mile: document.getElementById('distanceMile').value,
+                run_time: document.getElementById('runTime').value,
+                memo: document.getElementById('memo1').value,
+              };
+            } else if (!isAerobic) {
+              record = {
+                ...record,
+                weight_kg: document.getElementById(`weightKg${setNum}`).value,
+                weight_lb: document.getElementById(`weightLb${setNum}`).value,
+                repetition: document.getElementById(`repetition${setNum}`).value,
+                memo: document.getElementById(`memo${setNum}`).value,
+                is_supported: document.getElementById(`support${setNum}`).checked,
+                left_or_right: getLeftOrRight(setNum),
+              };
+            }
+            if (isAerobic) {
+              if (!record.distance_km && !record.distance_mile) {
+                setMessage('distanceMessage', setNum, '距離を入力してください。');
+                isValid = false;
+              }
+              if (!record.run_time) {
+                setMessage('runTimeMessage', setNum, '時間を入力してください。');
+                isValid = false;
+              }
+            } else if (!isAerobic) {
+              if (!record.weight_kg && !record.weight_lb) {
+                setMessage('weightMessage', setNum, '重さを入力してください。');
+                isValid = false;
+              }
+              if (!record.repetition) {
+                setMessage('repetitionMessage', setNum, '回数を入力してください。');
+                isValid = false;
+              }
+            }
+            return record;
+          });
+
           if (isValid) {
-            onSubmit(record).then(async (res) => await setResult(res.status));
+            onSubmit(records).then(async (res) => await setResponse(res.status));
           }
         }}
       >

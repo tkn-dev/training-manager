@@ -1,5 +1,5 @@
 export const getExercises = () => {
-  return fetch('/exercises/api', {
+  return fetch('/exercises/get/all', {
     method: 'GET',
   }).then(async (res) => {
     const ret = await res.json();
@@ -9,7 +9,7 @@ export const getExercises = () => {
 };
 
 export const postExercise = (exercise) => {
-  return fetch('/exercises/api', {
+  return fetch('/exercises/new', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -23,7 +23,7 @@ export const postExercise = (exercise) => {
 };
 
 export const deleteExercise = (exerciseName) => {
-  return fetch('exercises/api', {
+  return fetch('exercises/delete', {
     method: 'DELETE',
     headers: {
       'Content-Type': 'application/json',

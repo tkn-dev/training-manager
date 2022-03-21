@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 const express = require('express');
-const pool = require('../db');
+const { pool } = require('../db');
 const systemLogger = require('../log/systemLogger');
 const log = require('../log/constants');
 const isOnlySpace = require('../util/isOnlySpace');
@@ -17,7 +17,7 @@ const selectAll = () => 'SELECT id, name, is_aerobic FROM exercises;';
 const addExercise = (colName, value) => `INSERT INTO exercises (${colName}) VALUES (${value});`;
 const deleteExercise = (name) => `DELETE FROM exercises WHERE name = '${name}';`;
 
-router.get('/api', (req, res) => {
+router.get('/get/all', (req, res) => {
   systemLogger.debug(log.DBG_MSG.QUERY_EXEC, selectAll());
   pool.query(selectAll(), (error, results) => {
     systemLogger.debug(log.DBG_MSG.QUERY_RESULT, results);
@@ -35,7 +35,7 @@ router.get('/api', (req, res) => {
   });
 });
 
-router.post('/api', (req, res) => {
+router.post('/new', (req, res) => {
   systemLogger.debug(log.DBG_MSG.FUNC_EXEC, isOnlySpace.name);
   systemLogger.debug(log.DBG_MSG.FUNC_RESULT, isOnlySpace(req.body.name));
   if (isOnlySpace(req.body.name)) {
@@ -60,7 +60,7 @@ router.post('/api', (req, res) => {
   });
 });
 
-router.delete('/api', (req, res) => {
+router.delete('/delete', (req, res) => {
   systemLogger.debug(log.DBG_MSG.QUERY_EXEC, deleteExercise(req.body.name));
   pool.query(deleteExercise(req.body.name), (error, results) => {
     systemLogger.debug(log.DBG_MSG.QUERY_RESULT, results);

@@ -25,6 +25,7 @@ export default function App() {
             <Route path="/exercises" element={<ExercisesIndex />} />
             <Route path="/records" element={<RecordsIndex />} />
             <Route path="/histories" element={<HistoriesIndex />} />
+            {/* TODO: 404ページにする */}
             <Route path="*" element={<ExercisesIndex />} />
           </Routes>
         </BrowserRouter>

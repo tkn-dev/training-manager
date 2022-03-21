@@ -6,40 +6,69 @@ import PropTypes from 'prop-types';
 const inputLabel = css({
   width: '100%',
 });
-const hidden = css({
-  width: 0,
-  height: 0,
-  visibility: 'hidden',
-});
 
-export default function AnaerobicFrom({ weightMessage, repetitionMessage, isHidden }) {
+export default function AnaerobicFrom({ setNum }) {
   return (
-    <div css={isHidden ? hidden : ''}>
-      <label css={inputLabel} htmlFor="weight">
+    <div>
+      <label css={inputLabel} htmlFor={`weight${setNum}`}>
         重さ
         {/* Todo kgとlbのどちらを使うか選べるようにする */}
-        <input type="number" name="weight" id="weightKg" min="0" />
-        <input type="number" name="weight" id="weightLb" min="0" hidden />
-        <p id="weightMessage">{weightMessage}</p>
+        <input type="number" name={`weight${setNum}`} id={`weightKg${setNum}`} min="0" />
+        <input type="number" name={`weight${setNum}`} id={`weightLb${setNum}`} min="0" hidden />
+        <p id={`weightMessage${setNum}`}></p>
       </label>
 
-      <label css={inputLabel} htmlFor="repetition">
+      <label css={inputLabel} htmlFor={`repetition${setNum}`}>
         回数
-        <input type="number" name="repetition" id="repetition" min="0" />
-        <p id="repetitionMessage">{repetitionMessage}</p>
+        <input type="number" name={`repetition${setNum}`} id={`repetition${setNum}`} min="0" />
+        <p id={`repetitionMessage${setNum}`}></p>
+      </label>
+
+      <label css={inputLabel} htmlFor={`memo${setNum}`}>
+        メモ
+        <input type="text" name={`memo${setNum}`} id={`memo${setNum}`} />
+      </label>
+
+      <label css={inputLabel} htmlFor={`support${setNum}`}>
+        補助
+        <input type="checkbox" name={`support${setNum}`} id={`support${setNum}`} />
+      </label>
+
+      <label css={inputLabel} htmlFor={`leftOrRight${setNum}`}>
+        左右
+        <div>
+          <input
+            type="radio"
+            name={`leftOrRight${setNum}`}
+            id={`left${setNum}`}
+            defaultValue={'left'}
+          />
+          <label htmlFor={`left${setNum}`}>左</label>
+          <input
+            type="radio"
+            name={`leftOrRight${setNum}`}
+            id={`none${setNum}`}
+            defaultValue={'none'}
+            defaultChecked
+          />
+          <label htmlFor={`none${setNum}`}>未指定</label>
+          <input
+            type="radio"
+            name={`leftOrRight${setNum}`}
+            id={`right${setNum}`}
+            defaultValue={'right'}
+          />
+          <label htmlFor={`right${setNum}`}>右</label>
+        </div>
       </label>
     </div>
   );
 }
 
 AnaerobicFrom.propTypes = {
-  weightMessage: PropTypes.string,
-  repetitionMessage: PropTypes.string,
-  isHidden: PropTypes.bool,
+  setNum: PropTypes.number,
 };
 
 AnaerobicFrom.defaultProps = {
-  weightMessage: '',
-  repetitionMessage: '',
-  isHidden: false,
+  setNum: 1,
 };

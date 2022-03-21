@@ -148,11 +148,13 @@ export const reset = css`
     text-decoration: line-through;
   }
 
-  abbr[title],
+  /* 優先度の関係で削除 */
+  /*  abbr[title],
   dfn[title] {
     border-bottom: 1px dotted;
     cursor: help;
   }
+*/
 
   table {
     border-collapse: collapse;
