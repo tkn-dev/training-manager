@@ -30,6 +30,7 @@ const records = sequelize.define(
     distance_mile: { type: DataTypes.DECIMAL },
     run_time: { type: DataTypes.TIME },
     memo: { type: DataTypes.STRING },
+    recorded_at: { type: DataTypes.DATE },
     created_at: { type: DataTypes.DATE },
     updated_at: { type: DataTypes.DATE },
   },

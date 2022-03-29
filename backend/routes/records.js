@@ -1,5 +1,5 @@
 const express = require('express');
-const { Op } = require('sequelize');
+const { Op, Sequelize } = require('sequelize');
 const { sequelize } = require('../db');
 const { exercises, records } = require('../tables');
 const systemLogger = require('../log/systemLogger');
@@ -46,7 +46,10 @@ router.post('/new', async (req, res) => {
       Object.keys(record).map((key) => {
         if (record[key] === '') record[key] = null;
       });
-      await records.create({ ...record }, { transaction: transaction });
+      await records.create(
+        { ...record, recorded_at: Sequelize.literal('CURRENT_TIMESTAMP') },
+        { transaction: transaction },
+      );
     }
     await transaction.commit();
     res.status(201);
