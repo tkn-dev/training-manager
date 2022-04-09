@@ -28,7 +28,7 @@ const records = sequelize.define(
     left_or_right: { type: DataTypes.STRING },
     distance_km: { type: DataTypes.DECIMAL },
     distance_mile: { type: DataTypes.DECIMAL },
-    run_time: { type: DataTypes.TIME },
+    exercise_time: { type: DataTypes.TIME },
     memo: { type: DataTypes.STRING },
     recorded_at: { type: DataTypes.DATE },
     created_at: { type: DataTypes.DATE },
