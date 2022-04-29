@@ -25,7 +25,6 @@ const records = sequelize.define(
     weight_lb: { type: DataTypes.DECIMAL },
     repetition: { type: DataTypes.INTEGER },
     is_supported: { type: DataTypes.BOOLEAN },
-    left_or_right: { type: DataTypes.STRING },
     distance_km: { type: DataTypes.DECIMAL },
     distance_mile: { type: DataTypes.DECIMAL },
     exercise_time: { type: DataTypes.TIME },
