@@ -46,7 +46,6 @@ export const postRecord = async (record) => {
     body: JSON.stringify(record),
   });
   const ret = await res.json();
-  debugger;
   ret.status = res.status;
   return await ret;
 };
