@@ -150,7 +150,6 @@ export default function NewCreateRecord({ exerciseList = [], onSubmit = (f) => f
           const retErrors = validateRecordFormValues(errors);
           if (retErrors.count == 0) {
             const res = await onSubmit(getRecordFormValueForPost());
-            debugger;
             if (res.status == '201') {
               resetRecordFormValue();
               document.getElementById('exerciseNameList').value = '';
