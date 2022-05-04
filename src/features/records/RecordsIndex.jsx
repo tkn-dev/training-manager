@@ -26,7 +26,7 @@ export default function RecordsIndex() {
     <section>
       <h1>記録入力</h1>
       <p>{message}</p>
-      <CreateRecord exerciseList={exerciseList} onSubmit={insertRecord}></CreateRecord>
+      <CreateRecord exerciseList={exerciseList} onSubmit={insertRecord} />
     </section>
   );
 }

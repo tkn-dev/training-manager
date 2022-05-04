@@ -2,8 +2,8 @@
 import { css, jsx } from '@emotion/react';
 import React, { useEffect, useState } from 'react';
 import { MdKeyboardArrowRight, MdDoubleArrow } from 'react-icons/md';
-import { getRecordsSpecifiedMonth } from '../../api/records';
-import useCreateDayList from './hooks/useCreateDayList';
+import { getRecordsBySpecifiedMonth } from '../../api/records';
+import useCreateDayListView from './hooks/useCreateDayListView';
 import useMoveYearMonth from './hooks/useMoveYearMonth';
 
 const moveNext = css({
@@ -29,7 +29,7 @@ const daysContainer = css({
   flexWrap: 'wrap',
 });
 
-export default function TrainingCalendar({ setDailyRecordList }) {
+export default function TrainingCalendar({ setDailyRecordList, setSelectedDate }) {
   const [
     selectedYear,
     selectedMonth,
@@ -40,25 +40,31 @@ export default function TrainingCalendar({ setDailyRecordList }) {
   ] = useMoveYearMonth();
   const [selectedYearMonth, setSelectedYearMonth] = useState();
   const [recordList, setRecordList] = useState();
-  const [dayList, setDayList] = useState();
+  const [dayListView, setDayListView] = useState();
 
   const onSelectDate = (date) => {
     setDailyRecordList(recordList.filter((record) => record.exercise_date === date));
+    setSelectedDate(date);
   };
-  const [createDayList] = useCreateDayList(selectedYear, selectedMonth, recordList, onSelectDate);
+  const [createDayListView] = useCreateDayListView(
+    selectedYear,
+    selectedMonth,
+    recordList,
+    onSelectDate,
+  );
 
   useEffect(() => {
     setSelectedYearMonth(selectedYear + '年' + selectedMonth + '月');
   }, [selectedYear, selectedMonth]);
 
   useEffect(async () => {
-    const res = await getRecordsSpecifiedMonth(selectedYear, selectedMonth);
+    const res = await getRecordsBySpecifiedMonth(selectedYear, selectedMonth);
     setRecordList(res.results);
   }, [selectedYearMonth]);
 
   useEffect(() => {
     if (!recordList) return;
-    setDayList(createDayList());
+    setDayListView(createDayListView());
   }, [recordList]);
 
   return (
@@ -95,8 +101,8 @@ export default function TrainingCalendar({ setDailyRecordList }) {
         </abbr>
       </div>
 
-      <div id="dayListContainer" css={daysContainer}>
-        {dayList}
+      <div id="daysContainer" css={daysContainer}>
+        {dayListView}
       </div>
     </div>
   );

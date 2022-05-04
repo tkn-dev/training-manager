@@ -22,7 +22,7 @@ const clipboardCheck = (isVisible) =>
     color: 'green',
   });
 
-export default function useCreateDayList(year, month, recordList, onSelectDate) {
+export default function useCreateDayListView(year, month, recordList, onSelectDate) {
   const [startingWeekDay, setStartingWeekDay] = useState();
   const [prevMonthEnd, setPrevMonthEnd] = useState();
   const [selectedMonthEnd, setSelectedMonthEnd] = useState();
@@ -58,7 +58,7 @@ export default function useCreateDayList(year, month, recordList, onSelectDate) 
     }
   }, [year, month]);
 
-  const createDayList = useCallback(() => {
+  const createDayListView = useCallback(() => {
     const exerciseDateList = [...new Set(recordList.map((record) => record.exercise_date))];
 
     return [...Array(42)].map((_, i) => {
@@ -97,5 +97,5 @@ export default function useCreateDayList(year, month, recordList, onSelectDate) 
     });
   });
 
-  return [createDayList];
+  return [createDayListView];
 }

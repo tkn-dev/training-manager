@@ -1,3 +1,5 @@
+/** @jsx jsx */
+import { css, jsx } from '@emotion/react';
 import React from 'react';
 import { MdDelete } from 'react-icons/md';
 import PropTypes from 'prop-types';

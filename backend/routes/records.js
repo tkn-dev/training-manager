@@ -11,7 +11,7 @@ records.belongsTo(exercises, {
   targetKey: 'name',
 });
 
-router.post('/search/specified-month', (req, res) => {
+router.post('/get/specified-month', (req, res) => {
   records
     .findAll({
       include: [{ model: exercises, attributes: ['is_aerobic'] }],
@@ -21,6 +21,30 @@ router.post('/search/specified-month', (req, res) => {
           [Op.between]: [`${req.body.prevYearMonth}-26`, `${req.body.nextYearMonth}-14`],
         },
       },
+      order: [['recorded_at', 'ASC']],
+    })
+    .then((rows) => {
+      res.status(200);
+      res.json({
+        message: '取得に成功しました。',
+        results: rows,
+      });
+    })
+    .catch((error) => {
+      systemLogger.error(error);
+      res.status(400);
+      res.json({
+        message: '取得に失敗しました。',
+      });
+    });
+});
+
+router.post('/get/date', (req, res) => {
+  records
+    .findAll({
+      include: [{ model: exercises, attributes: ['is_aerobic'] }],
+      where: { exercise_date: req.body.date },
+      order: [['recorded_at', 'ASC']],
     })
     .then((rows) => {
       res.status(200);

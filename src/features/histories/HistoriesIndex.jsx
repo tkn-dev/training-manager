@@ -4,11 +4,12 @@ import DailySimpleTrainingRecord from './DailySimpleTrainingRecord';
 
 export default function HistoriesIndex() {
   const [dailyRecordList, setDailyRecordList] = useState();
+  const [selectedDate, setSelectedDate] = useState();
 
   return (
     <div>
-      <TrainingCalendar setDailyRecordList={setDailyRecordList} />
-      <DailySimpleTrainingRecord />
+      <TrainingCalendar setDailyRecordList={setDailyRecordList} setSelectedDate={setSelectedDate} />
+      <DailySimpleTrainingRecord dailyRecordList={dailyRecordList} selectedDate={selectedDate} />
     </div>
   );
 }

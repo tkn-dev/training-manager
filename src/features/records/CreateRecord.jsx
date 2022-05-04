@@ -1,11 +1,16 @@
 /** @jsx jsx */
 import { css, jsx } from '@emotion/react';
-import React, { useCallback, useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
-import AerobicForm from './AerobicForm';
-import AnaerobicFrom from './AnaerobicForm';
-import { zeroPadding } from '../../util/zeroPadding';
-import SelectExerciseForm from './SelectExerciseForm';
+import React, { useEffect, useState } from 'react';
+import { useRecordFormValue } from './hooks/useRecordFormValue';
+import { useRecordFormRef } from './hooks/useRecordFormRef';
+import { useSetFormControl } from './hooks/useSetFormControl';
+import { SelectExerciseForm } from '../../components/elements/form/SelectExerciseForm';
+import { AerobicRecordForm } from '../../components/elements/form/AerobicRecordForm';
+import { AnaerobicRecordForm } from '../../components/elements/form/AnaerobicRecordForm';
+import { AddItem } from '../../components/elements/button/AddItem';
+import { RemoveItem } from '../../components/elements/button/RemoveItem';
+import { Submit } from '../../components/elements/button/Submit';
+import { useRecordFormErrorMessage } from './hooks/useRecordFormErrorMessage';
 
 const container = css({
   display: 'flex',
@@ -17,196 +22,145 @@ const formContainer = css({
   width: '100%',
   marginTop: '10px',
 });
-const formTitle = css({
+const formControllerContainer = css({
+  display: 'flex',
+  justifyContent: 'flex-start',
   width: '100%',
 });
-const inputContainer = css({
-  display: 'flex',
-  marginTop: '10px',
-});
-const submitButton = css({
-  marginTop: '20px',
+const anaerobicFormContainer = css({
+  width: '100%',
 });
 
-export default function CreateRecord({ exerciseList, onSubmit }) {
-  const defaultSelectedNum = 2;
+export default function NewCreateRecord({ exerciseList = [], onSubmit = (f) => f }) {
+  const [recordForm, setRecordForm] = useState();
+  const [
+    recordFormValues,
+    {
+      setRecordFormValue,
+      setCurtValueList,
+      validateRecordFormValues,
+      resetRecordFormValue,
+      getRecordFormValueForPost,
+    },
+  ] = useRecordFormValue();
+  const [refList, { getCurtValueList }] = useRecordFormRef();
+  const [errors, { setError, resetErrors }] = useRecordFormErrorMessage();
+  const setSetNum = (setNum) => setRecordFormValue({ set_number: setNum });
+  const [buttonStyle, setFormController] = useSetFormControl(
+    recordFormValues.set_number,
+    setSetNum,
+  );
 
-  const [exercise, setExercise] = useState();
-  const [isAerobic, setIsAerobic] = useState(false);
-  const [selectedSetNum, setSelectedSetNumber] = useState(defaultSelectedNum);
-  const [recordFrom, setRecordFrom] = useState();
-  const [response, setResponse] = useState();
-  const [exerciseMessage, setExerciseMessage] = useState();
-
-  const createAerobicForm = useCallback(() => {
-    return (
-      <div css={formContainer}>
-        <div css={inputContainer}>
-          <AerobicForm />
-        </div>
-      </div>
-    );
-  });
-
-  const createAnaerobicForm = useCallback((setNum) => {
-    return [...Array(setNum)].map((_, i) => {
+  const createInputForm = (formNum) => {
+    return [...Array(formNum)].map((_, i) => {
+      const setNum = i + 1;
       return (
-        <div css={formContainer} id={`formContainer${i + 1}`} key={i}>
-          <h2 css={formTitle}>{`セット${i + 1}`}</h2>
-          <div css={inputContainer}>
-            <AnaerobicFrom setNum={i + 1} />
-          </div>
+        <div key={setNum} css={anaerobicFormContainer}>
+          <h2>{`セット${setNum}`}</h2>
+          <AnaerobicRecordForm
+            setNum={setNum}
+            refs={{
+              weightRef: refList[`set${setNum}`].weight,
+              weightTypeRef: refList[`set${setNum}`].weightType,
+              repetitionRef: refList[`set${setNum}`].repetition,
+              memoRef: refList[`set${setNum}`].memo,
+              supportRef: refList[`set${setNum}`].isSupported,
+            }}
+            errors={errors[`set${setNum}`]}
+          />
         </div>
       );
     });
-  });
+  };
 
-  const hideAnaerobicFormContainer = useCallback((setNum) => {
-    for (let i = 10; i > setNum; i--) {
-      const style = document.getElementById(`formContainer${i}`).style;
-      style.visibility = 'hidden';
-      style.margin = '0';
-      style.height = '0';
-    }
-  });
-
-  // 種目切替時の有酸素フラグ更新
+  // 有酸素フラグ切替
   useEffect(() => {
-    setExerciseMessage(null);
-    if (!exercise) {
-      setIsAerobic(null);
-      setSelectedSetNumber(0);
-      setRecordFrom(null);
-      return;
+    if (!exerciseList || !recordFormValues.exercise) {
+      setRecordFormValue({ is_aerobic: null });
+    } else {
+      setRecordFormValue({
+        is_aerobic: exerciseList.find((exercise) => exercise.name === recordFormValues.exercise)
+          .is_aerobic,
+      });
     }
-    for (let exerciseObj of exerciseList) {
-      if (exerciseObj.name === exercise) {
-        setIsAerobic(!!exerciseObj.is_aerobic);
-        break;
-      }
-    }
-  }, [exercise]);
+  }, [recordFormValues.exercise]);
 
-  // 有酸素フラグ切替時のフォーム切替処理
+  // 有酸素フラグ更新時フォーム切替処理
   useEffect(() => {
-    if (isAerobic) {
-      setSelectedSetNumber(1);
-      setRecordFrom(createAerobicForm());
-    } else if (!isAerobic && exercise) {
-      setSelectedSetNumber(defaultSelectedNum);
-      setRecordFrom(createAnaerobicForm(10));
+    if (!recordFormValues.exercise) {
+      setRecordForm();
+      setFormController.disable();
+    } else if (recordFormValues.is_aerobic) {
+      setRecordForm(
+        <AerobicRecordForm
+          refs={{
+            distanceRef: refList['set1'].distance,
+            distanceTypeRef: refList['set1'].distanceType,
+            exerciseTimeRef: refList['set1'].exerciseTime,
+            memoRef: refList['set1'].memo,
+          }}
+          errors={errors.set1}
+        />,
+      );
+      setFormController.disable();
+    } else {
+      setRecordForm(createInputForm(recordFormValues.set_number));
+      setFormController.enable();
     }
-  }, [isAerobic]);
+  }, [recordFormValues.is_aerobic, errors.count]);
 
-  // セット数増減時の無酸素フォーム増減処理
+  // フォーム増減
   useEffect(() => {
-    if (recordFrom && !isAerobic) hideAnaerobicFormContainer(selectedSetNum);
-  }, [selectedSetNum]);
-
-  // フォームのリセット処理
-  useEffect(() => {}, [response]);
+    if (recordFormValues.exercise && !recordFormValues.is_aerobic) {
+      setRecordForm(createInputForm(recordFormValues.set_number));
+      setFormController.updateButtonStyle();
+    }
+  }, [recordFormValues.set_number]);
 
   return (
     <div css={container}>
       <SelectExerciseForm
+        currentDate={new Date()}
         exerciseList={exerciseList}
-        setExercise={setExercise}
-        exerciseMessage={exerciseMessage}
+        errors={errors}
+        setFullDate={(fullDate) => setRecordFormValue({ exercise_date: fullDate })}
+        setExerciseName={(exerciseName) => setRecordFormValue({ exercise: exerciseName })}
       />
-
-      {recordFrom}
-
-      <button
-        type="submit"
-        css={submitButton}
-        onClick={() => {
-          setExerciseMessage();
-          let isValid = true;
-
-          const setMessage = (id, setNum, message) => {
-            document.getElementById(`${id}${setNum}`).innerHTML = message;
-          };
-
-          const getLeftOrRight = (setNum) => {
-            const elements = document.getElementsByName(`leftOrRight${setNum}`);
-            for (let i = 0; i < elements.length; i++) {
-              if (elements.item(i).checked) return elements.item(i).value;
+      <div css={formContainer}>{recordForm}</div>
+      <div css={formControllerContainer}>
+        <AddItem
+          appendCss={buttonStyle.addItem}
+          onClick={() => {
+            if (recordFormValues.is_aerobic != null && !recordFormValues.is_aerobic)
+              setFormController.add();
+          }}
+        />
+        <RemoveItem
+          appendCss={buttonStyle.removeItem}
+          onClick={() => {
+            if (recordFormValues.is_aerobic != null && !recordFormValues.is_aerobic)
+              setFormController.remove();
+          }}
+        />
+      </div>
+      <Submit
+        onClick={async () => {
+          resetErrors();
+          setCurtValueList(getCurtValueList());
+          const retErrors = validateRecordFormValues(errors);
+          if (retErrors.count == 0) {
+            const res = await onSubmit(getRecordFormValueForPost());
+            debugger;
+            if (res.status == '201') {
+              resetRecordFormValue();
+              document.getElementById('exerciseNameList').value = '';
             }
-          };
-
-          if (!document.getElementById('exercise').value) {
-            setExerciseMessage('種目を選択して下さい。');
+          } else {
+            setError(retErrors);
             return;
           }
-
-          const records = [...Array(selectedSetNum)].map((_, i) => {
-            const setNum = i + 1;
-            let record = {
-              exercise_date:
-                document.getElementById('exerciseDateYear').value +
-                zeroPadding(document.getElementById('exerciseDateMonth').value, 2) +
-                zeroPadding(document.getElementById('exerciseDateDate').value, 2),
-              exercise: document.getElementById('exercise').value,
-              set_number: setNum,
-            };
-            if (isAerobic) {
-              record = {
-                ...record,
-                distance_km: document.getElementById('distanceKm').value,
-                distance_mile: document.getElementById('distanceMile').value,
-                run_time: document.getElementById('runTime').value,
-                memo: document.getElementById('memo1').value,
-              };
-            } else if (!isAerobic) {
-              record = {
-                ...record,
-                weight_kg: document.getElementById(`weightKg${setNum}`).value,
-                weight_lb: document.getElementById(`weightLb${setNum}`).value,
-                repetition: document.getElementById(`repetition${setNum}`).value,
-                memo: document.getElementById(`memo${setNum}`).value,
-                is_supported: document.getElementById(`support${setNum}`).checked,
-                left_or_right: getLeftOrRight(setNum),
-              };
-            }
-            if (isAerobic) {
-              if (!record.distance_km && !record.distance_mile) {
-                setMessage('distanceMessage', setNum, '距離を入力してください。');
-                isValid = false;
-              }
-              if (!record.run_time) {
-                setMessage('runTimeMessage', setNum, '時間を入力してください。');
-                isValid = false;
-              }
-            } else if (!isAerobic) {
-              if (!record.weight_kg && !record.weight_lb) {
-                setMessage('weightMessage', setNum, '重さを入力してください。');
-                isValid = false;
-              }
-              if (!record.repetition) {
-                setMessage('repetitionMessage', setNum, '回数を入力してください。');
-                isValid = false;
-              }
-            }
-            return record;
-          });
-
-          if (isValid) {
-            onSubmit(records).then(async (res) => await setResponse(res.status));
-          }
         }}
-      >
-        submit
-      </button>
+      />
     </div>
   );
 }
-
-CreateRecord.propTypes = {
-  exerciseList: PropTypes.arrayOf(PropTypes.object),
-  onSubmit: PropTypes.func,
-};
-
-CreateRecord.defaultProps = {
-  exerciseList: [],
-  onSubmit: (f) => f,
-};

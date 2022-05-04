@@ -2,8 +2,8 @@
 import { css, jsx } from '@emotion/react';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
-import PulldownMenu from '../../components/elements/form/PulldownMenu';
-import { getActualMaxDate } from '../../util/getActualMaxDate';
+import { PulldownMenu } from '../../components/elements/form/PulldownMenu';
+//import { getActualMaxDate } from '../../util/getActualMaxDate';
 
 const container = css({
   width: '100%',
@@ -38,7 +38,7 @@ export default function SelectExerciseForm({ exerciseList, setExercise, exercise
 
   // 月切替時の日付フォーム更新処理
   useEffect(() => {
-    setDateList([...Array(getActualMaxDate(year, month))].map((_, i) => i + 1));
+    //setDateList([...Array(getActualMaxDate(year, month))].map((_, i) => i + 1));
   }, [month]);
 
   // 日付フォーム更新後の日付設定値調整処理
