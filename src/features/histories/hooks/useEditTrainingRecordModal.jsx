@@ -4,8 +4,8 @@ import React, { useState, useCallback } from 'react';
 
 const editModal = css({});
 
-export default function useEditTrainingRecordModal() {
-  const shoeEditModal = (record) => {
+export const useEditTrainingRecordModal = () => {
+  const showEditModal = (record) => {
     return;
   };
 
@@ -15,4 +15,4 @@ export default function useEditTrainingRecordModal() {
       <p>2022-04-05</p>
     </div>
   );
-}
+};

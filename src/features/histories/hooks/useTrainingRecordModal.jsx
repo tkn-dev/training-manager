@@ -1,8 +1,8 @@
 /** @jsx jsx */
 import { css, jsx } from '@emotion/react';
 import React, { useState, useCallback } from 'react';
-import EditItem from '../../../components/elements/button/EditItem';
-import DeleteItem from '../../../components/elements/button/DeleteItem';
+import { EditItem } from '../../../components/elements/button/EditItem';
+import { DeleteItem } from '../../../components/elements/button/DeleteItem';
 import { getRecordsByDate } from '../../../api/records';
 
 const overlay = css({
@@ -26,7 +26,7 @@ const modal = css({
   borderRadius: '2%',
 });
 
-export default function useTrainingRecordModal() {
+export const useTrainingRecordModal = () => {
   const [modalWindow, setModalWIndow] = useState();
   const [recordView, setRecordView] = useState();
 
@@ -55,16 +55,14 @@ export default function useTrainingRecordModal() {
       const prevMaxLen = prev.length - 1;
       if (!prev.length || prev[prevMaxLen].exercise !== curt.exercise) {
         if (!curt.Exercise.is_aerobic) {
-          curt.weight_kg = [curt.weight_kg];
-          curt.weight_lb = [curt.weight_lb];
+          curt.weight = [curt.weight];
           curt.repetition = [curt.repetition];
           curt.memo = [curt.memo];
           curt.maxSetNum = 1;
         }
         prev.push(curt);
       } else if (prev[prevMaxLen].exercise === curt.exercise) {
-        prev[prevMaxLen].weight_kg = [...prev[prevMaxLen].weight_kg, curt.weight_kg];
-        prev[prevMaxLen].weight_lb = [...prev[prevMaxLen].weight_lb, curt.weight_lb];
+        prev[prevMaxLen].weight = [...prev[prevMaxLen].weight, curt.weight];
         prev[prevMaxLen].repetition = [...prev[prevMaxLen].repetition, curt.repetition];
         prev[prevMaxLen].memo = [...prev[prevMaxLen].memo, curt.memo];
         prev[prevMaxLen].maxSetNum++;
@@ -74,17 +72,17 @@ export default function useTrainingRecordModal() {
   });
 
   const aerobicExerciseRecord = useCallback(
-    (key, exerciseName, record, distanceKm, runTime, memoField, recordedAt) => {
+    (key, exerciseName, distance, distanceType, exerciseTime, memoField, recordedAt) => {
       return (
         <div key={key}>
           <div>
             <h3>{exerciseName}</h3>
             <EditItem />
-            <DeleteIte />
+            <DeleteItem />
           </div>
           <div>
-            <p>{`距離：${distanceKm}Km`}</p>
-            <p>{`時間：${runTime}`}</p>
+            <p>{`距離：${distance}${distanceType}`}</p>
+            <p>{`時間：${exerciseTime}分`}</p>
             {memoField}
           </div>
           <p>{recordedAt}</p>
@@ -114,8 +112,9 @@ export default function useTrainingRecordModal() {
         return aerobicExerciseRecord(
           i,
           record.exercise,
-          record.distance_km,
-          record.run_time,
+          record.distance,
+          record.distance_type,
+          record.exercise_time,
           memoField,
           record.recorded_at,
         );
@@ -124,7 +123,9 @@ export default function useTrainingRecordModal() {
           const memoField = record.memo[i] ? <p>{`メモ：${record.memo[i]}`}</p> : null;
           return (
             <div key={i}>
-              <p>{`セット${i + 1}：${record.weight_kg[i]}Kg × ${record.repetition[i]}`}</p>
+              <p>{`セット${i + 1}：${record.weight[i]}${record.weight_type} × ${
+                record.repetition[i]
+              }`}</p>
               {memoField}
             </div>
           );
@@ -143,5 +144,5 @@ export default function useTrainingRecordModal() {
     setRecordView(createTrainingRecordModal(recordSummaryList));
   });
 
-  return [modalWindow, updateModal, openModal];
-}
+  return [modalWindow, { openModal, updateModal }];
+};

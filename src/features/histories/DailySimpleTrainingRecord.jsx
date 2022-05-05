@@ -1,17 +1,16 @@
 /** @jsx jsx */
 import { css, jsx } from '@emotion/react';
 import React, { useEffect } from 'react';
-import PropTypes from 'prop-types';
-import useSimpleRecordView from './hooks/useSimpleRecordView';
-import useTrainingRecordModal from './hooks/useTrainingRecordModal';
+import { useSimpleRecordView } from './hooks/useSimpleRecordView';
+import { useTrainingRecordModal } from './hooks/useTrainingRecordModal';
 
 const simpleRecordViewContainer = css({
   maxWidth: '300px',
 });
 
-export default function DailySimpleTrainingRecord({ dailyRecordList, selectedDate }) {
-  const [simpleRecordView, updateRecordView] = useSimpleRecordView();
-  const [modalWindow, updateModal, openModal] = useTrainingRecordModal();
+export const DailySimpleTrainingRecord = ({ dailyRecordList, selectedDate }) => {
+  const [simpleRecordView, { updateRecordView }] = useSimpleRecordView();
+  const [modalWindow, { openModal, updateModal }] = useTrainingRecordModal();
 
   useEffect(() => {
     updateRecordView(dailyRecordList);
@@ -35,14 +34,4 @@ export default function DailySimpleTrainingRecord({ dailyRecordList, selectedDat
       {modalWindow}
     </div>
   );
-}
-
-DailySimpleTrainingRecord.propTypes = {
-  dailyRecordList: PropTypes.arrayOf(PropTypes.object),
-  selectedDate: PropTypes.string,
-};
-
-DailySimpleTrainingRecord.defaultProps = {
-  dailyRecordList: [],
-  selectedDate: '',
 };

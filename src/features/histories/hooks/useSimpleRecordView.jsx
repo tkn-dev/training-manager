@@ -7,7 +7,7 @@ const simpleRecordContainer = css({
   justifyContent: 'space-between',
 });
 
-export default function useSimpleRecordView() {
+export const useSimpleRecordView = () => {
   const [simpleRecordView, setSimpleRecordView] = useState();
 
   const createRecordList = useCallback((dailyRecordList) => {
@@ -17,8 +17,8 @@ export default function useSimpleRecordView() {
           exercise: curt.exercise,
           isAerobic: curt.Exercise.is_aerobic,
           setNum: curt.set_number,
-          distanceKm: curt.distance_km,
-          distanceMile: curt.distance_mile,
+          distance: curt.distance,
+          distanceType: curt.distance_type,
           recordedAt: curt.recorded_at,
         });
       } else {
@@ -28,13 +28,13 @@ export default function useSimpleRecordView() {
     }, []);
   });
 
-  const udpateRecordView = useCallback((dailyRecordList) => {
+  const updateRecordView = useCallback((dailyRecordList) => {
     const simpleRecordList = createRecordList(dailyRecordList);
     setSimpleRecordView(
       simpleRecordList.map((simpleRecord, i) => {
         let achievement;
         if (simpleRecord.isAerobic) {
-          achievement = `${simpleRecord.distanceKm}Km`;
+          achievement = `${simpleRecord.distance}${simpleRecord.distanceType}`;
         } else {
           achievement = `${simpleRecord.setNum}セット`;
         }
@@ -48,5 +48,5 @@ export default function useSimpleRecordView() {
     );
   });
 
-  return [simpleRecordView, udpateRecordView];
-}
+  return [simpleRecordView, { updateRecordView }];
+};

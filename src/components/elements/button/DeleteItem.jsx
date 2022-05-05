@@ -2,16 +2,17 @@
 import { css, jsx } from '@emotion/react';
 import React from 'react';
 import { MdDelete } from 'react-icons/md';
-import PropTypes from 'prop-types';
 
-export default function DeleteItem({ onClick }) {
-  return <MdDelete onClick={onClick} />;
-}
+const deleteItemStyle = (props) =>
+  css(
+    {
+      color: 'gray',
+      width: '30px',
+      height: '30px',
+    },
+    props,
+  );
 
-DeleteItem.propTypes = {
-  onClick: PropTypes.func,
-};
-
-DeleteItem.defaultProps = {
-  onClick: (f) => f,
+export const DeleteItem = ({ appendCss = css({}), onClick = (f) => f }) => {
+  return <MdDelete css={deleteItemStyle(appendCss.styles)} onClick={onClick} />;
 };

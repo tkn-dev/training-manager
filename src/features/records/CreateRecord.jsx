@@ -31,7 +31,7 @@ const anaerobicFormContainer = css({
   width: '100%',
 });
 
-export default function NewCreateRecord({ exerciseList = [], onSubmit = (f) => f }) {
+export const CreateRecord = ({ exerciseList = [], onSubmit = (f) => f }) => {
   const [recordForm, setRecordForm] = useState();
   const [
     recordFormValues,
@@ -162,4 +162,4 @@ export default function NewCreateRecord({ exerciseList = [], onSubmit = (f) => f
       />
     </div>
   );
-}
+};

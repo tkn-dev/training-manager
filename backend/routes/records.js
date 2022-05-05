@@ -86,4 +86,31 @@ router.post('/new', async (req, res) => {
   }
 });
 
+router.delete('/', async (req, res) => {
+  const transaction = await sequelize.transaction();
+  try {
+    const deletedrow = await records.destroy(
+      { where: { exercise: req.body.exercise, recorded_at: req.body.recorded_at } },
+      { transaction: transaction },
+    );
+    if (deletedrow == req.body.set_number) {
+      await transaction.commit();
+      res.status(201);
+      return res.json({ message: '削除に成功しました。' });
+    } else {
+      await transaction.rollback();
+      systemLogger.error(
+        `failed to delete a part of the record.(expected: ${req.body.set_number}, actual: ${deletedrow})`,
+      );
+      res.status(400);
+      return res.json({ message: '削除が一部失敗しました。' });
+    }
+  } catch (error) {
+    await transaction.rollback();
+    systemLogger.error(error);
+    res.status(400);
+    return res.json({ message: '削除に失敗しました。' });
+  }
+});
+
 module.exports = router;

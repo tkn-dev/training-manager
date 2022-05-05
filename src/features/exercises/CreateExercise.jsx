@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
 
-export default function CreateExercise({ onSubmit }) {
+export const CreateExercise = ({ onSubmit = (f) => f }) => {
   const [result, setResult] = useState();
 
   useEffect(() => {
@@ -35,12 +34,4 @@ export default function CreateExercise({ onSubmit }) {
       </button>
     </div>
   );
-}
-
-CreateExercise.propTypes = {
-  onSubmit: PropTypes.func,
-};
-
-CreateExercise.defaultProps = {
-  onSubmit: (f) => f,
 };

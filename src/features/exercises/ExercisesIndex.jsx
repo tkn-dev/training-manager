@@ -1,9 +1,9 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import CreateExercise from './CreateExercise';
-import ShowExercises from './ShowExercises';
+import { CreateExercise } from './CreateExercise';
+import { ShowExercises } from './ShowExercises';
 import { getExercises, postExercise, deleteExercise } from '../../api/exercises';
 
-export default function ExercisesIndex() {
+export const ExercisesIndex = () => {
   const [message, setMessage] = useState();
   const [exerciseList, setExerciseList] = useState([]);
 
@@ -37,4 +37,4 @@ export default function ExercisesIndex() {
       <ShowExercises exerciseList={exerciseList} onDelete={removeExercise} />
     </section>
   );
-}
+};

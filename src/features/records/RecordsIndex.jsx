@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { getExercises } from '../../api/exercises';
 import { postRecord } from '../../api/records';
-import CreateRecord from './CreateRecord';
+import { CreateRecord } from './CreateRecord';
 
-export default function RecordsIndex() {
+export const RecordsIndex = () => {
   const [message, setMessage] = useState();
   const [exerciseList, setExerciseList] = useState();
 
@@ -29,4 +29,4 @@ export default function RecordsIndex() {
       <CreateRecord exerciseList={exerciseList} onSubmit={insertRecord} />
     </section>
   );
-}
+};

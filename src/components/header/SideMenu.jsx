@@ -18,7 +18,7 @@ const link = css({
   pointerEvents: 'auto',
 });
 
-export default function SideMenu() {
+export const SideMenu = () => {
   return (
     <nav css={sideMenu}>
       <ol>
@@ -40,4 +40,4 @@ export default function SideMenu() {
       </ol>
     </nav>
   );
-}
+};

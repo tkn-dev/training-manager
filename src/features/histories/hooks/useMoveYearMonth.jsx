@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react';
 
-export default function useMoveYearMonth() {
+export const useMoveYearMonth = () => {
   const currentDate = new Date();
   const [selectedYear, setSelectedYear] = useState(currentDate.getFullYear());
   const [selectedMonth, setSelectedMonth] = useState(currentDate.getMonth() + 1);
@@ -25,9 +25,6 @@ export default function useMoveYearMonth() {
   return [
     selectedYear,
     selectedMonth,
-    moveToPrevYear,
-    moveToNextYear,
-    moveToPrevMonth,
-    moveToNextMonth,
+    { moveToPrevYear, moveToNextYear, moveToPrevMonth, moveToNextMonth },
   ];
-}
+};

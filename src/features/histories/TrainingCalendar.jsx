@@ -3,8 +3,8 @@ import { css, jsx } from '@emotion/react';
 import React, { useEffect, useState } from 'react';
 import { MdKeyboardArrowRight, MdDoubleArrow } from 'react-icons/md';
 import { getRecordsBySpecifiedMonth } from '../../api/records';
-import useCreateDayListView from './hooks/useCreateDayListView';
-import useMoveYearMonth from './hooks/useMoveYearMonth';
+import { useCreateDayListView } from './hooks/useCreateDayListView';
+import { useMoveYearMonth } from './hooks/useMoveYearMonth';
 
 const moveNext = css({
   height: '15px',
@@ -29,14 +29,11 @@ const daysContainer = css({
   flexWrap: 'wrap',
 });
 
-export default function TrainingCalendar({ setDailyRecordList, setSelectedDate }) {
+export const TrainingCalendar = ({ setDailyRecordList, setSelectedDate }) => {
   const [
     selectedYear,
     selectedMonth,
-    moveToPrevYear,
-    moveToNextYear,
-    moveToPrevMonth,
-    moveToNextMonth,
+    { moveToPrevYear, moveToNextYear, moveToPrevMonth, moveToNextMonth },
   ] = useMoveYearMonth();
   const [selectedYearMonth, setSelectedYearMonth] = useState();
   const [recordList, setRecordList] = useState();
@@ -106,4 +103,4 @@ export default function TrainingCalendar({ setDailyRecordList, setSelectedDate }
       </div>
     </div>
   );
-}
+};

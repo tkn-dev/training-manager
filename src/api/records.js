@@ -49,3 +49,16 @@ export const postRecord = async (record) => {
   ret.status = res.status;
   return await ret;
 };
+
+export const deleteRecord = async (record) => {
+  const res = await fetch('/records', {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(record),
+  });
+  const ret = await res.json();
+  ret.status = res.status;
+  return await ret;
+};

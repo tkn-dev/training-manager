@@ -22,7 +22,7 @@ const clipboardCheck = (isVisible) =>
     color: 'green',
   });
 
-export default function useCreateDayListView(year, month, recordList, onSelectDate) {
+export const useCreateDayListView = (year, month, recordList, onSelectDate) => {
   const [startingWeekDay, setStartingWeekDay] = useState();
   const [prevMonthEnd, setPrevMonthEnd] = useState();
   const [selectedMonthEnd, setSelectedMonthEnd] = useState();
@@ -98,4 +98,4 @@ export default function useCreateDayListView(year, month, recordList, onSelectDa
   });
 
   return [createDayListView];
-}
+};

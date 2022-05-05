@@ -27,11 +27,11 @@ const pageTitle = css({
   letterSpacing: 1,
 });
 
-export default function Header() {
+export const Header = () => {
   return (
     <header css={header}>
       <FiMenu css={menuToggle} />
       <h1 css={pageTitle}>Title</h1>
     </header>
   );
-}
+};

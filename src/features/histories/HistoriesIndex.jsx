@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import TrainingCalendar from './TrainingCalendar';
-import DailySimpleTrainingRecord from './DailySimpleTrainingRecord';
+import { TrainingCalendar } from './TrainingCalendar';
+import { DailySimpleTrainingRecord } from './DailySimpleTrainingRecord';
 
-export default function HistoriesIndex() {
-  const [dailyRecordList, setDailyRecordList] = useState();
+export const HistoriesIndex = () => {
+  const [dailyRecordList, setDailyRecordList] = useState([]);
   const [selectedDate, setSelectedDate] = useState();
 
   return (
@@ -12,4 +12,4 @@ export default function HistoriesIndex() {
       <DailySimpleTrainingRecord dailyRecordList={dailyRecordList} selectedDate={selectedDate} />
     </div>
   );
-}
+};
