@@ -4,7 +4,6 @@ export const index = css`
   html {
     height: 100%;
     font-size: 62.5%;
-    pointer-events: none;
   }
 
   body {
@@ -12,7 +11,6 @@ export const index = css`
     color: #333;
     font-size: 1.2rem;
     font-family: 'Hiragino Kaku Gothic ProN', 'Meyrio', sans-serif;
-    pointer-events: none;
   }
 
   *,
@@ -27,6 +25,5 @@ export const index = css`
 
   #root {
     height: 100%;
-    pointer-events: none;
   }
 `;
