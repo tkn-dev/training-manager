@@ -26,8 +26,10 @@ export const useCreateDayListView = (year, month, recordList, onSelectDate) => {
   const [startingWeekDay, setStartingWeekDay] = useState();
   const [prevMonthEnd, setPrevMonthEnd] = useState();
   const [selectedMonthEnd, setSelectedMonthEnd] = useState();
+  const [selectedFullDate, setSelectedFullDate] = useState();
   const [prevYearMonth, setPrevYearMonth] = useState();
   const [nextYearMonth, setNextYearMonth] = useState();
+  const getFullDate = () => selectedFullDate;
 
   useEffect(() => {
     const weekDay = new Date(year, month - 1, 1).getDay();
@@ -87,7 +89,10 @@ export const useCreateDayListView = (year, month, recordList, onSelectDate) => {
           css={dayStyle}
           key={i}
           type="button"
-          onClick={() => onSelectDate(fullDate)}
+          onClick={() => {
+            onSelectDate(fullDate);
+            setSelectedFullDate(fullDate);
+          }}
         >
           {date}
           <br />
@@ -97,5 +102,5 @@ export const useCreateDayListView = (year, month, recordList, onSelectDate) => {
     });
   });
 
-  return [createDayListView];
+  return [createDayListView, getFullDate];
 };

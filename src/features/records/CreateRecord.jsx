@@ -44,7 +44,7 @@ export const CreateRecord = ({ exerciseList = [], onSubmit = (f) => f }) => {
     },
   ] = useRecordFormValue();
   const [refList, { getCurtValueList }] = useRecordFormRef();
-  const [errors, { setError, resetErrors }] = useRecordFormErrorMessage();
+  const [errors, { setError }] = useRecordFormErrorMessage();
   const setSetNum = (setNum) => setRecordFormValue({ set_number: setNum });
   const [buttonStyle, setFormController] = useSetFormControl(
     recordFormValues.set_number,
@@ -107,7 +107,7 @@ export const CreateRecord = ({ exerciseList = [], onSubmit = (f) => f }) => {
       setRecordForm(createInputForm(recordFormValues.set_number));
       setFormController.enable();
     }
-  }, [recordFormValues.is_aerobic, errors.count]);
+  }, [recordFormValues.is_aerobic, errors]);
 
   // フォーム増減
   useEffect(() => {
@@ -121,7 +121,7 @@ export const CreateRecord = ({ exerciseList = [], onSubmit = (f) => f }) => {
     <div css={container}>
       <SelectExerciseForm
         currentDate={new Date()}
-        exerciseList={exerciseList}
+        exerciseList={[{ name: '' }, ...exerciseList]}
         errors={errors}
         setFullDate={(fullDate) => setRecordFormValue({ exercise_date: fullDate })}
         setExerciseName={(exerciseName) => setRecordFormValue({ exercise: exerciseName })}
@@ -145,9 +145,9 @@ export const CreateRecord = ({ exerciseList = [], onSubmit = (f) => f }) => {
       </div>
       <Submit
         onClick={async () => {
-          resetErrors();
+          setError();
           setCurtValueList(getCurtValueList());
-          const retErrors = validateRecordFormValues(errors);
+          const retErrors = validateRecordFormValues();
           if (retErrors.count == 0) {
             const res = await onSubmit(getRecordFormValueForPost());
             if (res.status == '201') {

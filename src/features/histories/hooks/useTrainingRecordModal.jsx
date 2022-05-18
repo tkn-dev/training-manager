@@ -1,9 +1,9 @@
 /** @jsx jsx */
 import { css, jsx } from '@emotion/react';
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { EditItem } from '../../../components/elements/button/EditItem';
 import { DeleteItem } from '../../../components/elements/button/DeleteItem';
-import { getRecordsByDate } from '../../../api/records';
+import { getRecordsByDate, deleteRecord } from '../../../api/records';
 
 const overlay = css({
   position: 'fixed',
@@ -26,16 +26,21 @@ const modal = css({
   borderRadius: '2%',
 });
 
-export const useTrainingRecordModal = () => {
-  const [modalWindow, setModalWIndow] = useState();
+export const useTrainingRecordModal = (incrementModifyCount = (f) => f) => {
+  const [modalWindow, setModalWindow] = useState();
   const [recordView, setRecordView] = useState();
+  const [rerenderDate, setRerenderDate] = useState();
+  const [rerenderCount, setRerenderCount] = useState(0);
+  const [open, setOpen] = useState(false);
+
+  const incrementRenderCount = () => setRerenderCount((prev) => prev + 1);
 
   const onClickOverlay = useCallback(() => {
-    setModalWIndow();
+    setModalWindow();
   });
 
   const openModal = useCallback((date) => {
-    setModalWIndow(
+    setModalWindow(
       <div css={overlay} onClick={() => onClickOverlay()}>
         <section
           css={modal}
@@ -50,10 +55,28 @@ export const useTrainingRecordModal = () => {
     );
   });
 
+  const deleteAndRerender = useCallback(async (exercise, recordedAt, setNum, date) => {
+    const res = await deleteRecord({
+      exercise: exercise,
+      recorded_at: recordedAt,
+      set_number: setNum,
+    });
+    if (res.status == '200') {
+      await updateModal(date);
+      setRerenderDate(date);
+      incrementRenderCount();
+      incrementModifyCount();
+    }
+  });
+
   const createRecordSummaryList = useCallback((recordList) => {
     return recordList.results.reduce((prev, curt) => {
       const prevMaxLen = prev.length - 1;
-      if (!prev.length || prev[prevMaxLen].exercise !== curt.exercise) {
+      if (
+        !prev.length ||
+        prev[prevMaxLen].exercise !== curt.exercise ||
+        prev[prevMaxLen].recorded_at !== curt.recorded_at
+      ) {
         if (!curt.Exercise.is_aerobic) {
           curt.weight = [curt.weight];
           curt.repetition = [curt.repetition];
@@ -71,36 +94,42 @@ export const useTrainingRecordModal = () => {
     }, []);
   });
 
-  const aerobicExerciseRecord = useCallback(
-    (key, exerciseName, distance, distanceType, exerciseTime, memoField, recordedAt) => {
-      return (
-        <div key={key}>
-          <div>
-            <h3>{exerciseName}</h3>
-            <EditItem />
-            <DeleteItem />
-          </div>
-          <div>
-            <p>{`距離：${distance}${distanceType}`}</p>
-            <p>{`時間：${exerciseTime}分`}</p>
-            {memoField}
-          </div>
-          <p>{recordedAt}</p>
-        </div>
-      );
-    },
-  );
-
-  const anaerobicExerciseRecord = useCallback((key, exerciseName, setField, recordedAt) => {
+  const aerobicExerciseRecord = useCallback((record, key, memoField, date) => {
     return (
       <div key={key}>
         <div>
-          <h3>{exerciseName}</h3>
+          <h3>{record.exercise}</h3>
           <EditItem />
-          <DeleteItem />
+          <DeleteItem
+            onClick={() => {
+              deleteAndRerender(record.exercise, record.recorded_at, record.maxSetNum, date);
+            }}
+          />
+        </div>
+        <div>
+          <p>{`距離： ${record.distance}${record.distance_type}`}</p>
+          <p>{`時間： ${record.exercise_time}分`}</p>
+          {memoField}
+        </div>
+        <p>{record.recorded_at}</p>
+      </div>
+    );
+  });
+
+  const anaerobicExerciseRecord = useCallback((record, key, setField, date) => {
+    return (
+      <div key={key}>
+        <div>
+          <h3>{record.exercise}</h3>
+          <EditItem />
+          <DeleteItem
+            onClick={() =>
+              deleteAndRerender(record.exercise, record.recorded_at, record.maxSetNum, date)
+            }
+          />
         </div>
         {setField}
-        <p>{recordedAt}</p>
+        <p>{record.recorded_at}</p>
       </div>
     );
   });
@@ -108,29 +137,21 @@ export const useTrainingRecordModal = () => {
   const createTrainingRecordModal = useCallback((recordSummaryList) => {
     return recordSummaryList.map((record, i) => {
       if (record.Exercise.is_aerobic) {
-        const memoField = record.memo ? <p>{`メモ：${record.memo}`}</p> : null;
-        return aerobicExerciseRecord(
-          i,
-          record.exercise,
-          record.distance,
-          record.distance_type,
-          record.exercise_time,
-          memoField,
-          record.recorded_at,
-        );
+        const memoField = record.memo ? <p>{`メモ: ${record.memo}`}</p> : null;
+        return aerobicExerciseRecord(record, i, memoField, recordSummaryList.date);
       } else {
         const setField = [...Array(record.maxSetNum)].map((_, i) => {
-          const memoField = record.memo[i] ? <p>{`メモ：${record.memo[i]}`}</p> : null;
+          const memoField = record.memo[i] ? <p>{`メモ: ${record.memo[i]}`}</p> : null;
           return (
             <div key={i}>
-              <p>{`セット${i + 1}：${record.weight[i]}${record.weight_type} × ${
+              <p>{`セット${i + 1}: ${record.weight[i]}${record.weight_type} x ${
                 record.repetition[i]
               }`}</p>
               {memoField}
             </div>
           );
         });
-        return anaerobicExerciseRecord(i, record.exercise, setField, record.recorded_at);
+        return anaerobicExerciseRecord(record, i, setField, recordSummaryList.date);
       }
     });
   });
@@ -141,8 +162,16 @@ export const useTrainingRecordModal = () => {
     if (!res.results) return;
 
     const recordSummaryList = createRecordSummaryList(res);
+    recordSummaryList.date = date;
     setRecordView(createTrainingRecordModal(recordSummaryList));
   });
+
+  useEffect(() => {
+    if (rerenderDate) {
+      openModal(rerenderDate);
+      setRerenderDate();
+    }
+  }, [rerenderCount]);
 
   return [modalWindow, { openModal, updateModal }];
 };

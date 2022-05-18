@@ -29,7 +29,7 @@ const daysContainer = css({
   flexWrap: 'wrap',
 });
 
-export const TrainingCalendar = ({ setDailyRecordList, setSelectedDate }) => {
+export const TrainingCalendar = ({ setDailyRecordList, setSelectedDate, modifyCount }) => {
   const [
     selectedYear,
     selectedMonth,
@@ -43,7 +43,7 @@ export const TrainingCalendar = ({ setDailyRecordList, setSelectedDate }) => {
     setDailyRecordList(recordList.filter((record) => record.exercise_date === date));
     setSelectedDate(date);
   };
-  const [createDayListView] = useCreateDayListView(
+  const [createDayListView, getFullDate] = useCreateDayListView(
     selectedYear,
     selectedMonth,
     recordList,
@@ -58,6 +58,13 @@ export const TrainingCalendar = ({ setDailyRecordList, setSelectedDate }) => {
     const res = await getRecordsBySpecifiedMonth(selectedYear, selectedMonth);
     setRecordList(res.results);
   }, [selectedYearMonth]);
+
+  useEffect(async () => {
+    const res = await getRecordsBySpecifiedMonth(selectedYear, selectedMonth);
+    setRecordList(res.results);
+    const fullDate = getFullDate();
+    setDailyRecordList(res.results.filter((record) => record.exercise_date === fullDate));
+  }, [modifyCount]);
 
   useEffect(() => {
     if (!recordList) return;

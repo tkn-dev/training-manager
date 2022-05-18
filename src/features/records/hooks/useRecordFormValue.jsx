@@ -1,14 +1,11 @@
 import React, { useCallback, useState } from 'react';
 import { zeroPadding } from '../../../util/zeroPadding';
 
-export const useRecordFormValue = (exerciseDate = null) => {
+export const useRecordFormValue = () => {
   const defaultSelectedNum = 2;
-  const defaultExerciseDate = useCallback(() => {
-    const date = new Date();
-    const today =
-      date.getFullYear() + zeroPadding(date.getMonth() + 1, 2) + zeroPadding(date.getDate(), 2);
-    return exerciseDate ? exerciseDate : today;
-  });
+  const date = new Date();
+  const today =
+    date.getFullYear() + zeroPadding(date.getMonth() + 1, 2) + zeroPadding(date.getDate(), 2);
   const defaultSetFormValues = useCallback(() => {
     return {
       weight: null,
@@ -25,7 +22,7 @@ export const useRecordFormValue = (exerciseDate = null) => {
 
   const defaultRecordFormValues = useCallback(() => {
     return {
-      exercise_date: defaultExerciseDate(),
+      exercise_date: today,
       exercise: null,
       is_aerobic: null,
       set_number: defaultSelectedNum,
@@ -123,7 +120,7 @@ export const useRecordFormValue = (exerciseDate = null) => {
 
   const getRecordFormValueForPost = useCallback(() => {
     const ret = [];
-    const times = recordFormValues.is_aerobic === 1 ? 1 : recordFormValues.set_number;
+    const times = recordFormValues.is_aerobic ? 1 : recordFormValues.set_number;
     for (let i = 1; i <= times; i++) {
       const record = {
         exercise_date: recordFormValues.exercise_date,

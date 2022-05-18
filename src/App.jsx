@@ -15,7 +15,7 @@ const main = css({
 
 export default function App() {
   return (
-    <>
+    <div>
       <Header />
       <SideMenu />
       <main css={main}>
@@ -30,6 +30,6 @@ export default function App() {
           </Routes>
         </BrowserRouter>
       </main>
-    </>
+    </div>
   );
 }

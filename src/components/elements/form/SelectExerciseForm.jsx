@@ -75,7 +75,7 @@ export const SelectExerciseForm = ({
       <label css={inputLabel} htmlFor="exerciseList">
         種目
         <PulldownMenu
-          itemList={['', ...exerciseList.map((exercise) => exercise.name)]}
+          itemList={[...exerciseList.map((exercise) => exercise.name)]}
           name={'exerciseNameList'}
           id={'exerciseNameList'}
           onChange={() => setExerciseName(document.getElementById('exerciseNameList').value)}

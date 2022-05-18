@@ -7,11 +7,11 @@ import App from './App';
 
 const rootElement = document.getElementById('root');
 render(
-  <>
+  <div>
     <Global styles={reset} />
     <Global styles={index} />
 
     <App />
-  </>,
+  </div>,
   rootElement,
 );

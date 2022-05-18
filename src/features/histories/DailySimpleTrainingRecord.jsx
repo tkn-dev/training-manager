@@ -1,37 +1,42 @@
 /** @jsx jsx */
 import { css, jsx } from '@emotion/react';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSimpleRecordView } from './hooks/useSimpleRecordView';
-import { useTrainingRecordModal } from './hooks/useTrainingRecordModal';
+import { TrainingRecordModal } from './TrainingRecordModal';
 
 const simpleRecordViewContainer = css({
   maxWidth: '300px',
 });
 
-export const DailySimpleTrainingRecord = ({ dailyRecordList, selectedDate }) => {
+export const DailySimpleTrainingRecord = ({
+  dailyRecordList,
+  selectedDate,
+  incrementModifyCount,
+}) => {
   const [simpleRecordView, { updateRecordView }] = useSimpleRecordView();
-  const [modalWindow, { openModal, updateModal }] = useTrainingRecordModal();
+  const [openModal, setOpenModal] = useState(false);
 
   useEffect(() => {
     updateRecordView(dailyRecordList);
   }, [dailyRecordList]);
 
-  useEffect(() => {
-    updateModal(selectedDate);
-  }, [selectedDate]);
-
   return (
     <div css={simpleRecordViewContainer}>
       <section
         onClick={() => {
-          if (simpleRecordView.length) openModal(selectedDate);
+          if (simpleRecordView.length) setOpenModal(true);
         }}
       >
         <h2>{selectedDate}</h2>
         {simpleRecordView}
       </section>
 
-      {modalWindow}
+      <TrainingRecordModal
+        openModal={openModal}
+        setOpenModal={setOpenModal}
+        selectedDate={selectedDate}
+        incrementModifyCount={incrementModifyCount}
+      />
     </div>
   );
 };

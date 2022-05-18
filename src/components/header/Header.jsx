@@ -5,6 +5,8 @@ import { FiMenu } from 'react-icons/fi';
 
 const header = css({
   display: 'flex',
+  position: 'relative',
+  zIndex: '2',
   alignItems: 'center',
   marginBottom: '15px',
   padding: '10px',

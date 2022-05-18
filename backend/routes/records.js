@@ -86,16 +86,40 @@ router.post('/new', async (req, res) => {
   }
 });
 
-router.delete('/', async (req, res) => {
+router.put('/update', async (req, res) => {
   const transaction = await sequelize.transaction();
   try {
-    const deletedrow = await records.destroy(
-      { where: { exercise: req.body.exercise, recorded_at: req.body.recorded_at } },
-      { transaction: transaction },
-    );
+    await records.destroy({
+      where: { exercise: req.body.exercise, recorded_at: req.body.recorded_at },
+      transaction: transaction,
+    });
+    for (let record of req.body.record) {
+      Object.keys(record).map((key) => {
+        if (record[key] === '') record[key] = null;
+      });
+      await records.create({ ...record }, { transaction: transaction });
+    }
+    await transaction.commit();
+    res.status(201);
+    return res.json({ message: '更新に成功しました。' });
+  } catch (error) {
+    await transaction.rollback();
+    systemLogger.error(error);
+    res.status(400);
+    return res.json({ message: '更新に失敗しました。' });
+  }
+});
+
+router.delete('/delete', async (req, res) => {
+  const transaction = await sequelize.transaction();
+  try {
+    const deletedrow = await records.destroy({
+      where: { exercise: req.body.exercise, recorded_at: req.body.recorded_at },
+      transaction: transaction,
+    });
     if (deletedrow == req.body.set_number) {
       await transaction.commit();
-      res.status(201);
+      res.status(200);
       return res.json({ message: '削除に成功しました。' });
     } else {
       await transaction.rollback();

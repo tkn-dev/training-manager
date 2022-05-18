@@ -9,7 +9,7 @@ const sideMenu = css({
   position: 'absolute',
   top: '0',
   left: '0',
-  zIndex: '-1',
+  zIndex: '1',
   boxShadow: '0px 0px 3px black',
   lineHeight: '5',
 });

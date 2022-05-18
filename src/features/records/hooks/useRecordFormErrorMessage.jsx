@@ -32,12 +32,8 @@ export const useRecordFormErrorMessage = () => {
   const [errors, setErrors] = useState(defaultErrors());
 
   const setError = (error) => {
-    setErrors({ ...errors, ...error });
+    error ? setErrors({ ...defaultErrors(), ...error }) : setErrors(defaultErrors());
   };
 
-  const resetErrors = () => {
-    setErrors(defaultErrors());
-  };
-
-  return [errors, { setError, resetErrors }];
+  return [errors, { setError }];
 };

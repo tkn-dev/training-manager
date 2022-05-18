@@ -50,8 +50,25 @@ export const postRecord = async (record) => {
   return await ret;
 };
 
+export const updateRecord = async (record) => {
+  const res = await fetch('/records/update', {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      record: record,
+      exercise: record[0].exercise,
+      recorded_at: record[0].recorded_at,
+    }),
+  });
+  const ret = await res.json();
+  ret.status = res.status;
+  return await ret;
+};
+
 export const deleteRecord = async (record) => {
-  const res = await fetch('/records', {
+  const res = await fetch('/records/delete', {
     method: 'DELETE',
     headers: {
       'Content-Type': 'application/json',

@@ -27,19 +27,19 @@ export const useRecordFormRef = () => {
     set10: refs(),
   });
 
-  const getCurtValue = (ref) => {
+  const getCurtValue = useCallback((ref) => {
     if (ref.current) {
       return ref.current.value !== '' ? ref.current.value : null;
     } else {
       return null;
     }
-  };
+  });
 
-  const getCurtChecked = (ref) => {
+  const getCurtChecked = useCallback((ref) => {
     return ref.current ? ref.current.checked : null;
-  };
+  });
 
-  const getCurtValueList = () => {
+  const getCurtValueList = useCallback(() => {
     const valueList = [...Array(10)].map((_, i) => {
       const setNum = i + 1;
       return {
@@ -54,7 +54,29 @@ export const useRecordFormRef = () => {
       };
     });
     return valueList;
-  };
+  });
 
-  return [refList, { getCurtValueList }];
+  const setRefValue = useCallback((ref, value) => {
+    if (ref.current) ref.current.value = value;
+  });
+
+  const setRefChecked = useCallback((ref, checked) => {
+    if (ref.current) ref.current.checked = checked;
+  });
+
+  const setRefValues = useCallback((record) => {
+    [...Array(record.maxSetNum)].map((_, i) => {
+      const setNum = `set${i + 1}`;
+      setRefValue(refList[`${setNum}`].weight, record.weight[i]);
+      setRefValue(refList[`${setNum}`].weightType, record.weight_type[i]);
+      setRefValue(refList[`${setNum}`].repetition, record.repetition[i]);
+      setRefChecked(refList[`${setNum}`].isSupported, record.is_supported[i]);
+      setRefValue(refList[`${setNum}`].distance, record.distance);
+      setRefValue(refList[`${setNum}`].distanceType, record.distance_type);
+      setRefValue(refList[`${setNum}`].exerciseTime, record.exercise_time);
+      setRefValue(refList[`${setNum}`].memo, record.memo[i]);
+    });
+  });
+
+  return [refList, { getCurtValueList, setRefValues }];
 };
