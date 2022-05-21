@@ -7,6 +7,7 @@ export const CreateExercise = ({ onSubmit = (f) => f }) => {
     if (result === 201) {
       document.getElementById('exerciseName').value = '';
       document.getElementById('isAerobic').checked = false;
+      setResult();
     }
   }, [result]);
 
@@ -27,7 +28,7 @@ export const CreateExercise = ({ onSubmit = (f) => f }) => {
             name: document.getElementById('exerciseName').value,
             is_aerobic: document.getElementById('isAerobic').checked,
           };
-          onSubmit(exercise).then(async (res) => await setResult(res.status));
+          onSubmit(exercise).then(async (res) => setResult(res.status));
         }}
       >
         submit
