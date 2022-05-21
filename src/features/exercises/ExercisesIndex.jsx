@@ -23,6 +23,7 @@ export const ExercisesIndex = () => {
     const res = await deleteExercise(exerciseName);
     setMessage(res.message);
     updateList();
+    return res;
   });
 
   useEffect(() => {

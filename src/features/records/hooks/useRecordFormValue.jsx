@@ -45,8 +45,15 @@ export const useRecordFormValue = () => {
     setRecordFormValues({ ...recordFormValues, ...recordFormValue });
   });
 
-  const resetRecordFormValue = useCallback(() => {
-    setRecordFormValues(defaultRecordFormValues());
+  const resetRecordFormValue = useCallback((mode = 0) => {
+    // mode = 0: all reset
+    if (mode === 0) setRecordFormValues(defaultRecordFormValues());
+    // mode = 1: leave only date
+    if (mode === 1)
+      setRecordFormValues({
+        ...defaultRecordFormValues(),
+        exercise_date: recordFormValues.exercise_date,
+      });
   });
 
   const setCurtValueList = useCallback((valueList) => {

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Submit } from '../../components/elements/button/Submit';
 
 export const CreateExercise = ({ onSubmit = (f) => f }) => {
   const [result, setResult] = useState();
@@ -21,8 +22,7 @@ export const CreateExercise = ({ onSubmit = (f) => f }) => {
         有酸素
         <input type="checkbox" name="isAerobic" id="isAerobic" />
       </label>
-      <button
-        type="submit"
+      <Submit
         onClick={() => {
           const exercise = {
             name: document.getElementById('exerciseName').value,
@@ -30,9 +30,7 @@ export const CreateExercise = ({ onSubmit = (f) => f }) => {
           };
           onSubmit(exercise).then(async (res) => setResult(res.status));
         }}
-      >
-        submit
-      </button>
+      />
     </div>
   );
 };

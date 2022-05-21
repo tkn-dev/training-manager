@@ -151,7 +151,7 @@ export const CreateRecord = ({ exerciseList = [], onSubmit = (f) => f }) => {
           if (retErrors.count == 0) {
             const res = await onSubmit(getRecordFormValueForPost());
             if (res.status == '201') {
-              resetRecordFormValue();
+              resetRecordFormValue(1);
               document.getElementById('exerciseNameList').value = '';
             }
           } else {
