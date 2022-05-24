@@ -1,4 +1,10 @@
+/** @jsx jsx */
+import { css, jsx } from '@emotion/react';
 import React from 'react';
+
+const pulldownMenuStyle = css({
+  maxWidth: '300px',
+});
 
 export const PulldownMenu = ({
   itemList = [],
@@ -16,6 +22,7 @@ export const PulldownMenu = ({
   return (
     <select
       ref={refs.selectRef}
+      css={pulldownMenuStyle}
       name={name}
       id={id}
       defaultValue={defaultValue}

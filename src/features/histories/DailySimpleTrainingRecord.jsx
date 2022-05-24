@@ -5,7 +5,7 @@ import { useSimpleRecordView } from './hooks/useSimpleRecordView';
 import { TrainingRecordModal } from './TrainingRecordModal';
 
 const simpleRecordViewContainer = css({
-  maxWidth: '300px',
+  maxWidth: '400px',
 });
 
 export const DailySimpleTrainingRecord = ({

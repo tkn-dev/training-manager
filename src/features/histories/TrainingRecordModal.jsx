@@ -28,6 +28,16 @@ const modal = css({
   backgroundColor: 'white',
   borderRadius: '2%',
 });
+const recordSummaryContainer = css({
+  display: 'flex',
+  flexWrap: 'nowrap',
+  flexDirection: 'column',
+  height: '570px',
+  marginTop: '10px',
+  overflow: 'scroll',
+  borderTop: 'solid 1.5px lightgray',
+  borderBottom: 'solid 1.5px lightgray',
+});
 
 export const TrainingRecordModal = ({
   openModal,
@@ -82,7 +92,7 @@ export const TrainingRecordModal = ({
             }}
           >
             <h2>{selectedDate}</h2>
-            {recordSummary}
+            <div css={recordSummaryContainer}>{recordSummary}</div>
           </section>
         </div>
         <EditTrainingRecordModal
