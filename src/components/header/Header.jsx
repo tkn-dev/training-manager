@@ -26,15 +26,16 @@ const menuToggle = css({
 const pageTitle = css({
   display: 'inline-block',
   marginLeft: '20px',
-  fontSize: '3rem',
-  letterSpacing: 1,
+  height: '40px',
+  width: '209px',
+  backgroundImage: 'url(./assets/logo.png)',
 });
 
 export const Header = ({ setSideMenuOpen }) => {
   return (
     <header css={header}>
       <FiMenu css={menuToggle} onClick={() => setSideMenuOpen((prev) => !prev)} />
-      <h1 css={pageTitle}>Title</h1>
+      <h1 css={pageTitle}></h1>
     </header>
   );
 };
