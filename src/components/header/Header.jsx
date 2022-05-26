@@ -2,6 +2,7 @@
 import { css, jsx } from '@emotion/react';
 import React from 'react';
 import { FiMenu } from 'react-icons/fi';
+import { SIDE_MENU } from '../../style/constants';
 
 const header = css({
   display: 'flex',
@@ -13,7 +14,7 @@ const header = css({
   height: '60px',
   width: '100%',
   backgroundColor: 'white',
-  boxShadow: '0px 1px 2px black',
+  boxShadow: '0px 0px 2px black',
 });
 
 const menuToggle = css({
@@ -29,10 +30,10 @@ const pageTitle = css({
   letterSpacing: 1,
 });
 
-export const Header = () => {
+export const Header = ({ setSideMenuOpen }) => {
   return (
     <header css={header}>
-      <FiMenu css={menuToggle} />
+      <FiMenu css={menuToggle} onClick={() => setSideMenuOpen((prev) => !prev)} />
       <h1 css={pageTitle}>Title</h1>
     </header>
   );

@@ -1,39 +1,65 @@
 /** @jsx jsx */
 import { css, jsx } from '@emotion/react';
 import React from 'react';
+import { SIDE_MENU } from '../../style/constants';
 
-const sideMenu = css({
-  height: '100%',
-  width: '60px',
-  paddingTop: '70px',
-  position: 'absolute',
-  top: '0',
-  left: '0',
-  zIndex: '1',
-  boxShadow: '0px 0px 3px black',
-  lineHeight: '5',
+const sideMenu = (open) =>
+  css({
+    height: '100%',
+    width: `${SIDE_MENU.WIDTH_PX}px`,
+    paddingTop: '70px',
+    position: 'absolute',
+    top: '0',
+    left: open ? '0' : `-${SIDE_MENU.WIDTH_PX}px`,
+    zIndex: '1',
+    boxShadow: '0px 0px 1px black',
+    lineHeight: '5',
+    transition: '0.3s',
+  });
+const linkContainer = css({
+  display: 'flex',
+  flexWrap: 'wrap',
 });
+const link = (open) =>
+  css({
+    padding: open ? '0 10px 0' : '0',
+    width: '100%',
+    listStyleType: 'none',
+    pointerEvents: 'auto',
+    transition: '0.3s',
+    '&:hover': {
+      backgroundColor: SIDE_MENU.HOVER_COLOR,
+      transition: '0.3s',
+    },
+  });
+const linkText = (open) =>
+  css({
+    color: SIDE_MENU.TEXT_COLOR,
+    textDecoration: 'none',
+    fontSize: open ? '1.1em' : '0',
+    letterSpacing: '0.5em',
+    transition: '0.3s',
+    '&:active': {
+      color: SIDE_MENU.TEXT_COLOR,
+    },
+  });
 
-const link = css({
-  pointerEvents: 'auto',
-});
-
-export const SideMenu = () => {
+export const SideMenu = ({ sideMenuOpen = true }) => {
   return (
-    <nav css={sideMenu}>
-      <ol>
-        <li>
-          <a css={link} href="/exercises">
+    <nav css={sideMenu(sideMenuOpen)}>
+      <ol css={linkContainer}>
+        <li css={link(sideMenuOpen)}>
+          <a css={linkText(sideMenuOpen)} href="/exercises">
             種目登録
           </a>
         </li>
-        <li>
-          <a css={link} href="records">
+        <li css={link(sideMenuOpen)}>
+          <a css={linkText(sideMenuOpen)} href="records">
             記録入力
           </a>
         </li>
-        <li>
-          <a css={link} href="histories">
+        <li css={link(sideMenuOpen)}>
+          <a css={linkText(sideMenuOpen)} href="histories">
             履歴
           </a>
         </li>

@@ -10,7 +10,7 @@ export const index = css`
     height: 100%;
     color: #333;
     font-size: 1.2rem;
-    font-family: 'Hiragino Kaku Gothic ProN', 'Meyrio', sans-serif;
+    font-family: 'Noto Sans Japanese', sans-serif;
   }
 
   *,

@@ -1,6 +1,6 @@
 /** @jsx jsx */
 import { css, jsx } from '@emotion/react';
-import React from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Header } from './components/header/Header';
 import { SideMenu } from './components/header/SideMenu';
@@ -8,17 +8,21 @@ import { ExercisesIndex } from './features/exercises/ExercisesIndex';
 import { RecordsIndex } from './features/records/RecordsIndex';
 import { HistoriesIndex } from './features/histories/HistoriesIndex';
 
-const main = css({
-  marginLeft: '80px',
-  pointerEvents: 'auto',
-});
+const main = (sideMenuOpen) =>
+  css({
+    marginLeft: sideMenuOpen ? '130px' : '30px',
+    pointerEvents: 'auto',
+    transition: '0.3s',
+  });
 
 export default function App() {
+  const [sideMenuOpen, setSideMenuOpen] = useState(true);
+
   return (
     <div>
-      <Header />
-      <SideMenu />
-      <main css={main}>
+      <Header setSideMenuOpen={setSideMenuOpen} />
+      <SideMenu sideMenuOpen={sideMenuOpen} />
+      <main css={main(sideMenuOpen)}>
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<ExercisesIndex />} />
