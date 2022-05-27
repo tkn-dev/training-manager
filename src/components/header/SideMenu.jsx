@@ -1,7 +1,7 @@
 /** @jsx jsx */
 import { css, jsx } from '@emotion/react';
 import React from 'react';
-import { SIDE_MENU } from '../../style/constants';
+import { HOVER, SIDE_MENU } from '../../style/constants';
 
 const sideMenu = (open) =>
   css({
@@ -28,8 +28,8 @@ const link = (open) =>
     pointerEvents: 'auto',
     transition: '0.3s',
     '&:hover': {
-      backgroundColor: SIDE_MENU.HOVER_COLOR,
-      transition: '0.3s',
+      backgroundColor: HOVER.COLOR,
+      transition: HOVER.TRANSITION,
     },
   });
 const linkText = (open) =>

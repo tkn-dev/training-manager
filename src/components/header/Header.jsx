@@ -2,7 +2,7 @@
 import { css, jsx } from '@emotion/react';
 import React from 'react';
 import { FiMenu } from 'react-icons/fi';
-import { SIDE_MENU } from '../../style/constants';
+import { HOVER } from '../../style/constants';
 
 const header = css({
   display: 'flex',
@@ -21,6 +21,12 @@ const menuToggle = css({
   display: 'inline-block',
   height: '40px',
   width: '40px',
+  padding: '10px',
+  '&:hover': {
+    backgroundColor: HOVER.COLOR,
+    transition: HOVER.TRANSITION,
+    borderRadius: '100%',
+  },
 });
 
 const pageTitle = css({

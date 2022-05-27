@@ -10,16 +10,21 @@ export const AlertDialog = ({
   open,
   title,
   text,
+  onClose,
   onAgree,
   onDisagree,
   agreeText = 'はい',
   disagreeText = 'いいえ',
 }) => {
+  const disagreeButton = onDisagree ? (
+    <Button onClick={() => onDisagree()}>{disagreeText}</Button>
+  ) : null;
+
   return (
     <div>
       <Dialog
         open={open}
-        onClose={onDisagree}
+        onClose={onClose}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
@@ -28,7 +33,7 @@ export const AlertDialog = ({
           <DialogContentText id="alert-dialog-description">{text}</DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => onDisagree()}>{disagreeText}</Button>
+          {disagreeButton}
           <Button onClick={() => onAgree()} autoFocus>
             {agreeText}
           </Button>

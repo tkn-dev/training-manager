@@ -2,10 +2,20 @@ import React, { useState, useCallback, useEffect } from 'react';
 import { CreateExercise } from './CreateExercise';
 import { ShowExercises } from './ShowExercises';
 import { getExercises, postExercise, deleteExercise } from '../../api/exercises';
+import { AlertDialog } from '../../components/elements/notification/AlertDialog';
 
 export const ExercisesIndex = () => {
+  const [open, setOpen] = useState(false);
   const [message, setMessage] = useState();
   const [exerciseList, setExerciseList] = useState([]);
+
+  const openDialog = useCallback(() => {
+    setOpen(true);
+  });
+
+  const closeDialog = useCallback(() => {
+    setOpen(false);
+  });
 
   const updateList = useCallback(async () => {
     const res = await getExercises();
@@ -16,6 +26,7 @@ export const ExercisesIndex = () => {
     const res = await postExercise(exercise);
     setMessage(res.message);
     updateList();
+    if (res.status !== '201') openDialog();
     return res;
   });
 
@@ -32,10 +43,9 @@ export const ExercisesIndex = () => {
 
   return (
     <section>
-      <h1>種目登録</h1>
-      <p>{message}</p>
       <CreateExercise onSubmit={insertExercise} />
       <ShowExercises exerciseList={exerciseList} onDelete={removeExercise} />
+      <AlertDialog open={open} title={message} onClose={closeDialog} onAgree={closeDialog} />
     </section>
   );
 };

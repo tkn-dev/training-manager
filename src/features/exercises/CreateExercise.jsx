@@ -1,8 +1,38 @@
 import React, { useEffect, useState } from 'react';
 import { Submit } from '../../components/elements/button/Submit';
+import { makeStyles } from '@mui/styles';
+import { Box } from '@mui/material';
+import { TextField } from '@mui/material';
+import { FormGroup } from '@mui/material';
+import { FormControlLabel } from '@mui/material';
+import { Switch } from '@mui/material';
+
+const useStyles = makeStyles({
+  box: {
+    width: '80%',
+    display: 'inline-flex',
+  },
+  exerciseNameField: {
+    width: '100%',
+  },
+  isAerobicGroup: {
+    width: '10%',
+    display: 'inline-flex',
+    flexDirection: 'row',
+    marginLeft: '10px',
+  },
+  isAerobicLabel: {
+    marginLeft: '0',
+  },
+  submit: {
+    width: '90%',
+    margin: '10px 0 30px',
+  },
+});
 
 export const CreateExercise = ({ onSubmit = (f) => f }) => {
   const [result, setResult] = useState();
+  const classes = useStyles();
 
   useEffect(() => {
     if (result === 201) {
@@ -14,15 +44,25 @@ export const CreateExercise = ({ onSubmit = (f) => f }) => {
 
   return (
     <div>
-      <label htmlFor="exerciseName">
-        name
-        <input type="text" name="exerciseName" id="exerciseName" />
-      </label>
-      <label htmlFor="isAerobic">
-        有酸素
-        <input type="checkbox" name="isAerobic" id="isAerobic" />
-      </label>
+      <Box className={classes.box} component="form" noValidate autoComplete="off">
+        <TextField
+          className={classes.exerciseNameField}
+          id="exerciseName"
+          label="種目名"
+          variant="outlined"
+        />
+      </Box>
+      <FormGroup className={classes.isAerobicGroup}>
+        <FormControlLabel
+          className={classes.isAerobicLabel}
+          control={<Switch id="isAerobic" />}
+          label="有酸素"
+          labelPlacement="start"
+        />
+      </FormGroup>
       <Submit
+        value={'登録'}
+        style={classes.submit}
         onClick={() => {
           const exercise = {
             name: document.getElementById('exerciseName').value,
