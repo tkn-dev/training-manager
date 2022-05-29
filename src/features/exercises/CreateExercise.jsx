@@ -14,6 +14,9 @@ const useStyles = makeStyles({
   },
   exerciseNameField: {
     width: '100%',
+    '&>*': {
+      fontSize: '1.5rem',
+    },
   },
   isAerobicGroup: {
     width: '10%',
@@ -23,10 +26,14 @@ const useStyles = makeStyles({
   },
   isAerobicLabel: {
     marginLeft: '0',
+    '&>*': {
+      fontSize: '1.2rem',
+    },
   },
   submit: {
     width: '90%',
     margin: '10px 0 30px',
+    fontSize: '1.2rem',
   },
 });
 

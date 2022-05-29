@@ -104,6 +104,7 @@ export const TrainingRecordModal = ({
         <AlertDialog
           open={openDialog}
           title={'記録を削除しますか？'}
+          onClose={closeDialog}
           onAgree={onDelete}
           onDisagree={closeDialog}
         />

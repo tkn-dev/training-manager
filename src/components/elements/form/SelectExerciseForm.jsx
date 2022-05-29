@@ -12,6 +12,7 @@ const container = css({
 });
 const inputLabel = css({
   width: '100%',
+  fontSize: '1.5rem',
 });
 
 export const SelectExerciseForm = ({
