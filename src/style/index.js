@@ -10,13 +10,13 @@ export const index = css`
     height: 100%;
     color: #333;
     font-size: 1.2rem;
-    font-family: 'Noto Sans Japanese', sans-serif;
   }
 
   *,
   *::before,
   *::after {
     box-sizing: border-box;
+    font-family: 'Noto Sans Japanese', sans-serif;
   }
 
   .hidden {

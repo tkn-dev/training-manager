@@ -3,9 +3,11 @@ import { css, jsx } from '@emotion/react';
 import React from 'react';
 import { Button } from '@mui/material';
 
-export const Submit = ({ value = 'submit', onClick = (f) => f, style }) => {
+const submitStyle = (props) => css({}, props);
+
+export const Submit = ({ value = 'submit', onClick = (f) => f, style, appendCss }) => {
   return (
-    <Button variant="contained" className={style} onClick={onClick}>
+    <Button variant="contained" className={style} css={submitStyle(appendCss)} onClick={onClick}>
       {value}
     </Button>
   );

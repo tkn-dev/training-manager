@@ -14,6 +14,9 @@ const inputLabel = css({
   width: '100%',
   fontSize: '1.5rem',
 });
+const pulldownMenu = css({
+  margin: '0 5px 10px 0',
+});
 
 export const SelectExerciseForm = ({
   currentDate = new Date(),
@@ -52,6 +55,7 @@ export const SelectExerciseForm = ({
         日付
         <PulldownMenu
           itemList={yearList}
+          appendCss={pulldownMenu}
           name={'fullDate'}
           id={'yearList'}
           defaultValue={year}
@@ -59,6 +63,7 @@ export const SelectExerciseForm = ({
         />
         <PulldownMenu
           itemList={monthList}
+          appendCss={pulldownMenu}
           name={'fullDate'}
           id={'monthList'}
           defaultValue={month}
@@ -66,6 +71,7 @@ export const SelectExerciseForm = ({
         />
         <PulldownMenu
           itemList={dateList}
+          appendCss={pulldownMenu}
           name={'fullDate'}
           id={'dateList'}
           defaultValue={date}
@@ -77,6 +83,7 @@ export const SelectExerciseForm = ({
         種目
         <PulldownMenu
           itemList={[...exerciseList.map((exercise) => exercise.name)]}
+          appendCss={pulldownMenu}
           name={'exerciseNameList'}
           id={'exerciseNameList'}
           onChange={() => setExerciseName(document.getElementById('exerciseNameList').value)}

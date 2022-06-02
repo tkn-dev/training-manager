@@ -1,14 +1,27 @@
 /** @jsx jsx */
 import { css, jsx } from '@emotion/react';
 import React from 'react';
+import { TEXT_FIELD } from '../../../style/constants';
 
-const pulldownMenuStyle = css({
-  maxWidth: '300px',
-});
+const pulldownMenuStyle = (props) =>
+  css(
+    {
+      padding: '5px 15px 5px 5px',
+      borderColor: 'rgba(0, 0, 0, 0.12)',
+      borderRadius: '4px',
+      fontSize: TEXT_FIELD.FONT_SIZE_MIDDLE,
+      height: TEXT_FIELD.HEIGHT_MIDDLE,
+      '&:hover': {
+        borderColor: 'rgba(0, 0, 0, 0.87)',
+      },
+    },
+    props,
+  );
 
 export const PulldownMenu = ({
   itemList = [],
   refs = {},
+  appendCss = css({}),
   name,
   id,
   defaultValue,
@@ -22,7 +35,7 @@ export const PulldownMenu = ({
   return (
     <select
       ref={refs.selectRef}
-      css={pulldownMenuStyle}
+      css={pulldownMenuStyle(appendCss)}
       name={name}
       id={id}
       defaultValue={defaultValue}

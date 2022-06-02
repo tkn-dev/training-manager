@@ -19,16 +19,30 @@ const container = css({
 const formContainer = css({
   display: 'flex',
   flexWrap: 'wrap',
+  height: '100%',
+  maxHeight: '38rem',
   width: '100%',
   marginTop: '10px',
+  marginLeft: '3rem',
+  overflowY: 'scroll',
 });
 const formControllerContainer = css({
   display: 'flex',
   justifyContent: 'flex-start',
   width: '100%',
+  marginLeft: '3rem',
+});
+const anaerobicFormLabel = css({
+  marginBottom: '15px',
+  fontSize: '1.2rem',
 });
 const anaerobicFormContainer = css({
   width: '100%',
+});
+const submit = css({
+  marginTop: '15px',
+  marginLeft: '3rem',
+  width: '70px',
 });
 
 export const CreateRecord = ({ exerciseList = [], onSubmit = (f) => f }) => {
@@ -56,7 +70,7 @@ export const CreateRecord = ({ exerciseList = [], onSubmit = (f) => f }) => {
       const setNum = i + 1;
       return (
         <div key={setNum} css={anaerobicFormContainer}>
-          <h2>{`セット${setNum}`}</h2>
+          <h2 css={anaerobicFormLabel}>{`セット${setNum}`}</h2>
           <AnaerobicRecordForm
             setNum={setNum}
             refs={{
@@ -129,7 +143,7 @@ export const CreateRecord = ({ exerciseList = [], onSubmit = (f) => f }) => {
       <div css={formContainer}>{recordForm}</div>
       <div css={formControllerContainer}>
         <AddItem
-          appendCss={buttonStyle.addItem}
+          appendCss={css(buttonStyle.addItem, { marginRight: '10px' })}
           onClick={() => {
             if (recordFormValues.is_aerobic != null && !recordFormValues.is_aerobic)
               setFormController.add();
@@ -144,6 +158,7 @@ export const CreateRecord = ({ exerciseList = [], onSubmit = (f) => f }) => {
         />
       </div>
       <Submit
+        value="登録"
         onClick={async () => {
           setError();
           setCurtValueList(getCurtValueList());
@@ -159,6 +174,7 @@ export const CreateRecord = ({ exerciseList = [], onSubmit = (f) => f }) => {
             return;
           }
         }}
+        appendCss={submit}
       />
     </div>
   );

@@ -1,45 +1,50 @@
+/** @jsx jsx */
+import { css, jsx } from '@emotion/react';
 import React, { useEffect, useState } from 'react';
 import { Submit } from '../../components/elements/button/Submit';
-import { makeStyles } from '@mui/styles';
 import { Box } from '@mui/material';
 import { TextField } from '@mui/material';
 import { FormGroup } from '@mui/material';
 import { FormControlLabel } from '@mui/material';
 import { Switch } from '@mui/material';
+import { TEXT_FIELD } from '../../style/constants';
 
-const useStyles = makeStyles({
-  box: {
-    width: '80%',
-    display: 'inline-flex',
+const box = css({
+  width: '80%',
+  display: 'inline-flex',
+});
+const exerciseNameField = css({
+  width: '100%',
+  '&>*': {
+    fontSize: TEXT_FIELD.FONT_SIZE_LARGE,
   },
-  exerciseNameField: {
-    width: '100%',
-    '&>*': {
-      fontSize: '1.5rem',
-    },
+  '&>label': {
+    lineHeight: TEXT_FIELD.FONT_SIZE_LARGE,
   },
-  isAerobicGroup: {
-    width: '10%',
-    display: 'inline-flex',
-    flexDirection: 'row',
-    marginLeft: '10px',
+  '&>div': {
+    height: TEXT_FIELD.HEIGHT_LARGE,
   },
-  isAerobicLabel: {
-    marginLeft: '0',
-    '&>*': {
-      fontSize: '1.2rem',
-    },
-  },
-  submit: {
-    width: '90%',
-    margin: '10px 0 30px',
+});
+const isAerobicGroup = css({
+  width: '10%',
+  display: 'inline-flex',
+  flexDirection: 'row',
+  marginLeft: '10px',
+});
+const isAerobicLabel = css({
+  marginLeft: '0',
+  '&>*': {
     fontSize: '1.2rem',
   },
+});
+const submit = css({
+  width: '90%',
+  margin: '10px 0 30px',
+  fontSize: '1.2rem',
 });
 
 export const CreateExercise = ({ onSubmit = (f) => f }) => {
   const [result, setResult] = useState();
-  const classes = useStyles();
 
   useEffect(() => {
     if (result === 201) {
@@ -51,17 +56,12 @@ export const CreateExercise = ({ onSubmit = (f) => f }) => {
 
   return (
     <div>
-      <Box className={classes.box} component="form" noValidate autoComplete="off">
-        <TextField
-          className={classes.exerciseNameField}
-          id="exerciseName"
-          label="種目名"
-          variant="outlined"
-        />
+      <Box css={box} component="form" noValidate autoComplete="off">
+        <TextField css={exerciseNameField} id="exerciseName" label="種目名" variant="outlined" />
       </Box>
-      <FormGroup className={classes.isAerobicGroup}>
+      <FormGroup css={isAerobicGroup}>
         <FormControlLabel
-          className={classes.isAerobicLabel}
+          css={isAerobicLabel}
           control={<Switch id="isAerobic" />}
           label="有酸素"
           labelPlacement="start"
@@ -69,7 +69,7 @@ export const CreateExercise = ({ onSubmit = (f) => f }) => {
       </FormGroup>
       <Submit
         value={'登録'}
-        style={classes.submit}
+        appendCss={submit}
         onClick={() => {
           const exercise = {
             name: document.getElementById('exerciseName').value,

@@ -1,46 +1,81 @@
 /** @jsx jsx */
 import { css, jsx } from '@emotion/react';
 import React from 'react';
+import { Box } from '@mui/material';
+import { TextField } from '@mui/material';
 import { PulldownMenu } from './PulldownMenu';
+import { TEXT_FIELD } from '../../../style/constants';
 
-const inputLabel = css({
-  width: '100%',
-});
+const textFieldCommon = {
+  paddingBottom: '15px',
+  '&>label': {
+    fontSize: TEXT_FIELD.FONT_SIZE_MIDDLE,
+    lineHeight: TEXT_FIELD.FONT_SIZE_MIDDLE,
+  },
+  '&>div': {
+    height: TEXT_FIELD.HEIGHT_MIDDLE,
+    '&>input': {
+      fontSize: TEXT_FIELD.FONT_SIZE_MIDDLE,
+    },
+  },
+};
+const textField = (props) => css(props, {});
+const distanceField = (props) =>
+  css(props, {
+    paddingRight: '5px',
+  });
+const memoField = (props) =>
+  css(props, {
+    width: '50rem',
+  });
 
 export const AerobicRecordForm = ({ errors = {}, refs = {} }) => {
   return (
     <div>
-      <label css={inputLabel} htmlFor="distance1">
-        距離
-        <input ref={refs.distanceRef} type="number" name="distance1" id="distance1" min="0" />
+      <Box component="form" noValidate autoComplete="off">
+        <TextField
+          label="距離"
+          variant="outlined"
+          css={distanceField(textFieldCommon)}
+          inputRef={refs.distanceRef}
+          type="number"
+          name="distance1"
+          id="distance1"
+          InputProps={{ inputProps: { min: 0 } }}
+        />
         <PulldownMenu
-          refs={{ selectRef: refs.distanceTypeRef }}
           itemList={['Km', 'Mile']}
-          name={'distance1'}
+          refs={{ selectRef: refs.distanceTypeRef }}
+          name={'distanceType1'}
           id={'distanceType1'}
           defaultValue={'Km'}
         />
-      </label>
+      </Box>
       <p id={'distanceError'}>{errors.distanceError}</p>
-
-      <label css={inputLabel} htmlFor="exerciseTime1">
-        時間
-        <input
-          ref={refs.exerciseTimeRef}
+      <Box component="form" noValidate autoComplete="off">
+        <TextField
+          label="時間"
+          variant="outlined"
+          css={textField(textFieldCommon)}
+          inputRef={refs.exerciseTimeRef}
           type="number"
           name="exerciseTime1"
           id="exerciseTime1"
-          min="0"
+          InputProps={{ inputProps: { min: 0 } }}
         />
-        (分)
-      </label>
+      </Box>
       <p id={'exerciseTimeError'}>{errors.exerciseTimeError}</p>
-
-      <label css={inputLabel} htmlFor="memo1">
-        メモ
-        <input ref={refs.memoRef} type="text" name="memo1" id="memo1" />
-      </label>
-      <p id={'memoError'}>{errors.memoError}</p>
+      <Box component="form" noValidate autoComplete="off">
+        <TextField
+          label="メモ"
+          variant="outlined"
+          css={memoField(textFieldCommon)}
+          inputRef={refs.memoRef}
+          type="text"
+          name="memo1"
+          id="memo1"
+        />
+      </Box>
     </div>
   );
 };

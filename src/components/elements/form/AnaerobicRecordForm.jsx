@@ -1,70 +1,97 @@
 /** @jsx jsx */
 import { css, jsx } from '@emotion/react';
 import React from 'react';
-import PropTypes from 'prop-types';
+import { Box } from '@mui/material';
+import { TextField } from '@mui/material';
 import { PulldownMenu } from './PulldownMenu';
+import { FormGroup } from '@mui/material';
+import { FormControlLabel } from '@mui/material';
+import { Switch } from '@mui/material';
+import { TEXT_FIELD } from '../../../style/constants';
 
-const inputLabel = css({
-  width: '100%',
+const textFieldCommon = {
+  paddingBottom: '15px',
+  '&>label': {
+    fontSize: TEXT_FIELD.FONT_SIZE_MIDDLE,
+    lineHeight: TEXT_FIELD.FONT_SIZE_MIDDLE,
+  },
+  '&>div': {
+    height: TEXT_FIELD.HEIGHT_MIDDLE,
+    '&>input': {
+      fontSize: TEXT_FIELD.FONT_SIZE_MIDDLE,
+    },
+  },
+};
+const textField = (props) => css(props, {});
+const weightField = (props) =>
+  css(props, {
+    paddingRight: '5px',
+  });
+const memoField = (props) =>
+  css(props, {
+    width: '50rem',
+  });
+const isAerobicForm = css({
+  display: 'inline',
+  marginLeft: '5px',
+});
+const isAerobicLabel = css({
+  marginLeft: '0',
 });
 
 export const AnaerobicRecordForm = ({ setNum, errors = {}, refs = {} }) => {
   return (
     <div>
-      <label css={inputLabel} htmlFor={`weight${setNum}`}>
-        重さ
-        <input
-          ref={refs.weightRef}
+      <Box component="form" noValidate autoComplete="off">
+        <TextField
+          label="重量"
+          variant="outlined"
+          css={weightField(textFieldCommon)}
+          inputRef={refs.weightRef}
           type="number"
-          name={`weight${setNum}`}
           id={`weight${setNum}`}
-          min="0"
+          InputProps={{ inputProps: { min: 0 } }}
         />
         <PulldownMenu
-          refs={{ selectRef: refs.weightTypeRef }}
           itemList={['Kg', 'Lb']}
-          name={`weight${setNum}`}
+          refs={{ selectRef: refs.weightTypeRef }}
+          name={`weightType${setNum}`}
           id={`weightType${setNum}`}
           defaultValue={'Kg'}
         />
-      </label>
+      </Box>
       <p id={`weightError${setNum}`}>{errors.weightError}</p>
-
-      <label css={inputLabel} htmlFor={`repetition${setNum}`}>
-        回数
-        <input
-          ref={refs.repetitionRef}
+      <Box component="form" noValidate autoComplete="off">
+        <TextField
+          label="回数"
+          variant="outlined"
+          css={textField(textFieldCommon)}
+          inputRef={refs.repetitionRef}
           type="number"
-          name={`repetition${setNum}`}
           id={`repetition${setNum}`}
-          min="0"
+          InputProps={{ inputProps: { min: 0 } }}
         />
-      </label>
+        <FormGroup css={isAerobicForm}>
+          <FormControlLabel
+            css={isAerobicLabel}
+            control={<Switch id={`support${setNum}`} ref={refs.supportRef} />}
+            label="補助"
+            labelPlacement="start"
+          />
+        </FormGroup>
+      </Box>
       <p id={`repetitionError${setNum}`}>{errors.repetitionError}</p>
-
-      <label css={inputLabel} htmlFor={`memo${setNum}`}>
-        メモ
-        <input ref={refs.memoRef} type="text" name={`memo${setNum}`} id={`memo${setNum}`} />
-      </label>
-      <p id={`memoError${setNum}`}>{errors.memoError}</p>
-
-      <label css={inputLabel} htmlFor={`support${setNum}`}>
-        補助
-        <input
-          ref={refs.supportRef}
-          type="checkbox"
-          name={`support${setNum}`}
-          id={`support${setNum}`}
+      <Box component="form" noValidate autoComplete="off">
+        <TextField
+          label="メモ"
+          variant="outlined"
+          css={memoField(textFieldCommon)}
+          inputRef={refs.memoRef}
+          type="text"
+          id={`memo${setNum}`}
         />
-      </label>
+      </Box>
+      <p id={`memoError${setNum}`}>{errors.memoError}</p>
     </div>
   );
-};
-
-AnaerobicRecordForm.propTypes = {
-  setNum: PropTypes.number,
-};
-
-AnaerobicRecordForm.defaultProps = {
-  setNum: 1,
 };
