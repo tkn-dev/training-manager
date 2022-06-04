@@ -2,7 +2,7 @@
   "appenders": {
     "system": {
       "type": "file",
-      "filename": "/var/log/trm_system.log",
+      "filename": "./log/trm_system.log",
       "backups": 7,
       "pattern": "-yyyy-MM-dd"
     },

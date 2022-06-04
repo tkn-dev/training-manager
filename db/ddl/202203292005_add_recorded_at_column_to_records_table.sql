@@ -1,4 +1,4 @@
-ALTER TABLE training_manager.records
+ALTER TABLE records
 ADD recorded_at DATETIME NOT NULL
 AFTER memo
 ;

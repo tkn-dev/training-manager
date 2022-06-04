@@ -1,4 +1,4 @@
-CREATE TABLE training_manager.records(
+CREATE TABLE records(
   id INT NOT NULL AUTO_INCREMENT,
   exercise_date DATE NOT NULL,
   exercise VARCHAR(30) NOT NULL,

@@ -15,14 +15,15 @@ const box = css({
 });
 const exerciseNameField = css({
   width: '100%',
-  '&>*': {
-    fontSize: TEXT_FIELD.FONT_SIZE_LARGE,
-  },
   '&>label': {
+    lineHeight: TEXT_FIELD.FONT_SIZE_LARGE,
     lineHeight: TEXT_FIELD.FONT_SIZE_LARGE,
   },
   '&>div': {
     height: TEXT_FIELD.HEIGHT_LARGE,
+    '&>input': {
+      fontSize: TEXT_FIELD.FONT_SIZE_LARGE,
+    },
   },
 });
 const isAerobicGroup = css({

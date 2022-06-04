@@ -1,0 +1,8 @@
+{
+  "Database": {
+    "name": "training_manager",
+    "host": "localhost",
+    "user": "root",
+    "password": ""
+  }
+}

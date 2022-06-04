@@ -1,3 +1,3 @@
-ALTER TABLE training_manager.records
-RENAME COLUMN run_time TO exercise_time
+ALTER TABLE records
+CHANGE run_time exercise_time TIME
 ;

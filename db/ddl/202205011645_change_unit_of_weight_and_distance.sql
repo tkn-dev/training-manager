@@ -1,6 +1,6 @@
-ALTER TABLE training_manager.records
-RENAME COLUMN weight_kg TO weight,
-RENAME COLUMN distance_km TO distance,
+ALTER TABLE records
+CHANGE weight_kg weight DECIMAL,
+CHANGE distance_km distance DECIMAL,
 DROP weight_lb,
 DROP distance_mile,
 ADD weight_type VARCHAR(10) AFTER weight,

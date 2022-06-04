@@ -1,3 +1,3 @@
-ALTER TABLE training_manager.records
+ALTER TABLE records
 DROP left_or_right
 ;

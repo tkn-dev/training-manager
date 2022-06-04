@@ -1,2 +1,2 @@
-CREATE DATABESE training_manager;
+CREATE DATABASE training_manager;
 USE training_manager;
