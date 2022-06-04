@@ -27,4 +27,8 @@ module.exports = {
     extensions: ['', '.js', '.jsx', '.json'],
   },
   devtool: 'source-map',
+  performance: {
+    maxEntrypointSize: 1000,
+    maxAssetSize: 1000,
+  },
 };
