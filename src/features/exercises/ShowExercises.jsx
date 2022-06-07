@@ -20,12 +20,12 @@ const exerciseContainer = css({
 });
 const exerciseName = css({
   width: '100%',
-  marginTop: '10px',
-  paddingBottom: '10px',
+  marginTop: '1rem',
+  paddingBottom: '1rem',
   borderBottom: '1px solid rgba(0,0,0,0.2)',
 });
 const deleteExerciseButton = css({
-  height: '35px',
+  height: '3.5rem',
   borderBottom: '1px solid rgba(0,0,0,0.2)',
   '&:hover': {
     color: 'crimson',

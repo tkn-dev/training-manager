@@ -6,7 +6,7 @@ import { TEXT_FIELD } from '../../../style/constants';
 const pulldownMenuStyle = (props) =>
   css(
     {
-      padding: '5px 15px 5px 5px',
+      padding: '0.5rem 1.5rem 0.5rem 0.5rem',
       borderColor: 'rgba(0, 0, 0, 0.12)',
       borderRadius: '4px',
       fontSize: TEXT_FIELD.FONT_SIZE_MIDDLE,

@@ -10,7 +10,7 @@ import { Switch } from '@mui/material';
 import { TEXT_FIELD } from '../../../style/constants';
 
 const textFieldCommon = {
-  paddingBottom: '15px',
+  paddingBottom: '1.5rem',
   '&>label': {
     fontSize: TEXT_FIELD.FONT_SIZE_MIDDLE,
     lineHeight: TEXT_FIELD.FONT_SIZE_MIDDLE,
@@ -25,7 +25,7 @@ const textFieldCommon = {
 const textField = (props) => css(props, {});
 const weightField = (props) =>
   css(props, {
-    paddingRight: '5px',
+    paddingRight: '0.5rem',
   });
 const memoField = (props) =>
   css(props, {
@@ -33,7 +33,7 @@ const memoField = (props) =>
   });
 const isAerobicForm = css({
   display: 'inline',
-  marginLeft: '5px',
+  marginLeft: '0.5rem',
 });
 const isAerobicLabel = css({
   marginLeft: '0',

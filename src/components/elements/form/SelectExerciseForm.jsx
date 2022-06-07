@@ -15,7 +15,7 @@ const inputLabel = css({
   fontSize: '1.5rem',
 });
 const pulldownMenu = css({
-  margin: '0 5px 10px 0',
+  margin: '0 0.5rem 1rem 0',
 });
 
 export const SelectExerciseForm = ({

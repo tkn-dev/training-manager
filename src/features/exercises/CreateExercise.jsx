@@ -30,7 +30,7 @@ const isAerobicGroup = css({
   width: '10%',
   display: 'inline-flex',
   flexDirection: 'row',
-  marginLeft: '10px',
+  marginLeft: '1rem',
 });
 const isAerobicLabel = css({
   marginLeft: '0',
@@ -40,7 +40,7 @@ const isAerobicLabel = css({
 });
 const submit = css({
   width: '90%',
-  margin: '10px 0 30px',
+  margin: '1rem 0 3rem',
   fontSize: '1.2rem',
 });
 

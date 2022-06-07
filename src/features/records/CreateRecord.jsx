@@ -22,7 +22,7 @@ const formContainer = css({
   height: '100%',
   maxHeight: '38rem',
   width: '100%',
-  marginTop: '10px',
+  marginTop: '1rem',
   marginLeft: '3rem',
   overflowY: 'scroll',
 });
@@ -33,16 +33,16 @@ const formControllerContainer = css({
   marginLeft: '3rem',
 });
 const anaerobicFormLabel = css({
-  marginBottom: '15px',
+  marginBottom: '1.5rem',
   fontSize: '1.2rem',
 });
 const anaerobicFormContainer = css({
   width: '100%',
 });
 const submit = css({
-  marginTop: '15px',
+  marginTop: '1.5rem',
   marginLeft: '3rem',
-  width: '70px',
+  width: '7rem',
 });
 
 export const CreateRecord = ({ exerciseList = [], onSubmit = (f) => f }) => {
