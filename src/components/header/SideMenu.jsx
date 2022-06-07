@@ -6,11 +6,11 @@ import { HOVER, SIDE_MENU } from '../../style/constants';
 const sideMenu = (open) =>
   css({
     height: '100%',
-    width: `${SIDE_MENU.WIDTH_PX}px`,
+    width: SIDE_MENU.WIDTH,
     paddingTop: '70px',
     position: 'absolute',
     top: '0',
-    left: open ? '0' : `-${SIDE_MENU.WIDTH_PX}px`,
+    left: open ? '0' : `-${SIDE_MENU.WIDTH}x`,
     zIndex: '1',
     boxShadow: '0px 0px 1px black',
     lineHeight: '5',
@@ -22,7 +22,6 @@ const linkContainer = css({
 });
 const link = (open) =>
   css({
-    padding: open ? '0 10px 0' : '0',
     width: '100%',
     listStyleType: 'none',
     pointerEvents: 'auto',
@@ -34,6 +33,9 @@ const link = (open) =>
   });
 const linkText = (open) =>
   css({
+    display: 'inline-block',
+    padding: open ? '0 1rem 0' : '0',
+    width: '100%',
     color: SIDE_MENU.TEXT_COLOR,
     textDecoration: 'none',
     fontSize: open ? '1.1em' : '0',

@@ -12,6 +12,6 @@ export const HOVER = {
 };
 
 export const SIDE_MENU = {
-  WIDTH_PX: '100',
+  WIDTH: '10rem',
   TEXT_COLOR: 'black',
 };
