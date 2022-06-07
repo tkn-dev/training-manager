@@ -3,7 +3,7 @@ import { css, jsx } from '@emotion/react';
 import React, { useCallback, useState } from 'react';
 import { DeleteItem } from '../../components/elements/button/DeleteItem';
 import { AlertDialog } from '../../components/elements/notification/AlertDialog';
-import { HOVER } from '../../style/constants';
+import { COLOR, HOVER } from '../../style/constants';
 
 const exercisesContainer = css({
   width: '90%',
@@ -22,11 +22,11 @@ const exerciseName = css({
   width: '100%',
   marginTop: '1rem',
   paddingBottom: '1rem',
-  borderBottom: '1px solid rgba(0,0,0,0.2)',
+  borderBottom: `1px solid ${COLOR.BORDER}`,
 });
 const deleteExerciseButton = css({
   height: '3.5rem',
-  borderBottom: '1px solid rgba(0,0,0,0.2)',
+  borderBottom: `1px solid ${COLOR.BORDER}`,
   '&:hover': {
     color: 'crimson',
     transitio: '0.3s',

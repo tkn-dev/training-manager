@@ -27,7 +27,7 @@ const link = (open) =>
     pointerEvents: 'auto',
     transition: '0.3s',
     '&:hover': {
-      backgroundColor: HOVER.COLOR,
+      backgroundColor: HOVER.AREA_COLOR,
       transition: HOVER.TRANSITION,
     },
   });
