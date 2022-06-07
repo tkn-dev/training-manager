@@ -10,7 +10,7 @@ const sideMenu = (open) =>
     paddingTop: '70px',
     position: 'absolute',
     top: '0',
-    left: open ? '0' : `-${SIDE_MENU.WIDTH}x`,
+    left: open ? '0' : `-${SIDE_MENU.WIDTH}`,
     zIndex: '1',
     boxShadow: '0px 0px 1px black',
     lineHeight: '5',
