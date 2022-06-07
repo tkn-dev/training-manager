@@ -26,6 +26,7 @@ const menuToggle = css({
     backgroundColor: HOVER.COLOR,
     transition: HOVER.TRANSITION,
     borderRadius: '100%',
+    cursor: 'pointer'
   },
 });
 
