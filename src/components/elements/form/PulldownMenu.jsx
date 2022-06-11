@@ -1,47 +1,65 @@
 /** @jsx jsx */
 import { css, jsx } from '@emotion/react';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { FormControl, Select, MenuItem, FormHelperText } from '@mui/material';
 import { TEXT_FIELD } from '../../../style/constants';
 
-const pulldownMenuStyle = (props) =>
+const container = (props) =>
   css(
     {
-      padding: '0.5rem 1.5rem 0.5rem 0.5rem',
-      borderColor: 'rgba(0, 0, 0, 0.12)',
-      borderRadius: '4px',
-      fontSize: TEXT_FIELD.FONT_SIZE_MIDDLE,
+      display: 'inline-block',
       height: TEXT_FIELD.HEIGHT_MIDDLE,
-      '&:hover': {
-        borderColor: 'rgba(0, 0, 0, 0.87)',
-      },
     },
     props,
   );
+const pulldownMenuStyle = css({
+  padding: '0.5rem 1.5rem 0.5rem 0.5rem',
+  borderColor: 'rgba(0, 0, 0, 0.12)',
+  borderRadius: '4px',
+  fontSize: TEXT_FIELD.FONT_SIZE_MIDDLE,
+  height: TEXT_FIELD.HEIGHT_MIDDLE,
+  '&:hover': {
+    borderColor: 'rgba(0, 0, 0, 0.87)',
+  },
+});
 
 export const PulldownMenu = ({
-  itemList = [],
+  itemList = [''],
   refs = {},
   appendCss = css({}),
   name,
   id,
   defaultValue,
   onChange = (f) => f,
+  errorMessage,
 }) => {
+  const [value, setValue] = useState(defaultValue ? defaultValue : '');
+
   const option_list = itemList.map((item, i) => (
-    <option key={i.toString()} value={item}>
+    <MenuItem key={i.toString()} value={item}>
       {item}
-    </option>
+    </MenuItem>
   ));
+  const firstValue = itemList[0] ? itemList[0] : '';
+  const formValue = itemList.includes(value) ? value : firstValue;
+
   return (
-    <select
-      ref={refs.selectRef}
-      css={pulldownMenuStyle(appendCss)}
-      name={name}
-      id={id}
-      defaultValue={defaultValue}
-      onChange={onChange}
-    >
-      {option_list}
-    </select>
+    <FormControl css={container(appendCss)} error={errorMessage ? true : false}>
+      <Select
+        ref={refs.selectRef}
+        css={pulldownMenuStyle}
+        name={name}
+        id={id}
+        defaultValue={defaultValue}
+        value={value == defaultValue ? value : formValue}
+        onChange={(event) => {
+          onChange(event);
+          setValue(event.target.value);
+        }}
+      >
+        {option_list}
+      </Select>
+      <FormHelperText>{errorMessage}</FormHelperText>
+    </FormControl>
   );
 };

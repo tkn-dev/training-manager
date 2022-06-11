@@ -6,6 +6,9 @@ import { TextField } from '@mui/material';
 import { PulldownMenu } from './PulldownMenu';
 import { TEXT_FIELD } from '../../../style/constants';
 
+const container = css({
+  paddingTop: '1rem',
+});
 const textFieldCommon = {
   paddingBottom: '1.5rem',
   '&>label': {
@@ -32,7 +35,7 @@ const memoField = (props) =>
 export const AerobicRecordForm = ({ errors = {}, refs = {} }) => {
   return (
     <div>
-      <Box component="form" noValidate autoComplete="off">
+      <Box css={container} component="form" noValidate autoComplete="off">
         <TextField
           label="距離"
           variant="outlined"
@@ -42,6 +45,8 @@ export const AerobicRecordForm = ({ errors = {}, refs = {} }) => {
           name="distance1"
           id="distance1"
           InputProps={{ inputProps: { min: 0 } }}
+          error={errors.distanceError ? true : false}
+          helperText={errors.distanceError}
         />
         <PulldownMenu
           itemList={['Km', 'Mile']}
@@ -51,7 +56,6 @@ export const AerobicRecordForm = ({ errors = {}, refs = {} }) => {
           defaultValue={'Km'}
         />
       </Box>
-      <p id={'distanceError'}>{errors.distanceError}</p>
       <Box component="form" noValidate autoComplete="off">
         <TextField
           label="時間"
@@ -62,9 +66,10 @@ export const AerobicRecordForm = ({ errors = {}, refs = {} }) => {
           name="exerciseTime1"
           id="exerciseTime1"
           InputProps={{ inputProps: { min: 0 } }}
+          error={errors.exerciseTimeError ? true : false}
+          helperText={errors.exerciseTimeError}
         />
       </Box>
-      <p id={'exerciseTimeError'}>{errors.exerciseTimeError}</p>
       <Box component="form" noValidate autoComplete="off">
         <TextField
           label="メモ"
@@ -74,6 +79,8 @@ export const AerobicRecordForm = ({ errors = {}, refs = {} }) => {
           type="text"
           name="memo1"
           id="memo1"
+          error={errors.memoError ? true : false}
+          helperText={errors.memoError}
         />
       </Box>
     </div>

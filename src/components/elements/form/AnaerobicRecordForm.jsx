@@ -51,6 +51,8 @@ export const AnaerobicRecordForm = ({ setNum, errors = {}, refs = {} }) => {
           type="number"
           id={`weight${setNum}`}
           InputProps={{ inputProps: { min: 0 } }}
+          error={errors.weightError ? true : false}
+          helperText={errors.weightError}
         />
         <PulldownMenu
           itemList={['Kg', 'Lb']}
@@ -60,7 +62,6 @@ export const AnaerobicRecordForm = ({ setNum, errors = {}, refs = {} }) => {
           defaultValue={'Kg'}
         />
       </Box>
-      <p id={`weightError${setNum}`}>{errors.weightError}</p>
       <Box component="form" noValidate autoComplete="off">
         <TextField
           label="回数"
@@ -70,6 +71,8 @@ export const AnaerobicRecordForm = ({ setNum, errors = {}, refs = {} }) => {
           type="number"
           id={`repetition${setNum}`}
           InputProps={{ inputProps: { min: 0 } }}
+          error={errors.repetitionError ? true : false}
+          helperText={errors.repetitionError}
         />
         <FormGroup css={isAerobicForm}>
           <FormControlLabel
@@ -80,7 +83,6 @@ export const AnaerobicRecordForm = ({ setNum, errors = {}, refs = {} }) => {
           />
         </FormGroup>
       </Box>
-      <p id={`repetitionError${setNum}`}>{errors.repetitionError}</p>
       <Box component="form" noValidate autoComplete="off">
         <TextField
           label="メモ"
@@ -89,9 +91,10 @@ export const AnaerobicRecordForm = ({ setNum, errors = {}, refs = {} }) => {
           inputRef={refs.memoRef}
           type="text"
           id={`memo${setNum}`}
+          error={errors.memoError ? true : false}
+          helperText={errors.memoError}
         />
       </Box>
-      <p id={`memoError${setNum}`}>{errors.memoError}</p>
     </div>
   );
 };

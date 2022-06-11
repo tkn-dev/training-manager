@@ -11,11 +11,29 @@ const container = css({
   flexWrap: 'wrap',
 });
 const inputLabel = css({
+  display: 'flex',
+  alignItems: 'center',
   width: '100%',
+  marginBottom: '1rem',
   fontSize: '1.5rem',
 });
 const pulldownMenu = css({
-  margin: '0 0.5rem 1rem 0',
+  marginLeft: '0.5rem',
+});
+const monthPulldown = css(pulldownMenu, {
+  '&>div': {
+    width: '9rem',
+  },
+});
+const datePulldown = css(pulldownMenu, {
+  '&>div': {
+    width: '9rem',
+  },
+});
+const exercisePulldown = css(pulldownMenu, {
+  '&>div': {
+    width: '50rem',
+  },
 });
 
 export const SelectExerciseForm = ({
@@ -38,11 +56,7 @@ export const SelectExerciseForm = ({
   }, [year, month]);
 
   useEffect(() => {
-    if (dateList.includes(date)) {
-      document.getElementById('dateList').value = date;
-    } else {
-      setDate(1);
-    }
+    if (!dateList.includes(date)) setDate(1);
   }, [dateList]);
 
   useEffect(() => {
@@ -58,38 +72,38 @@ export const SelectExerciseForm = ({
           appendCss={pulldownMenu}
           name={'fullDate'}
           id={'yearList'}
-          defaultValue={year}
-          onChange={() => setYear(Math.trunc(Number(document.getElementById('yearList').value)))}
+          defaultValue={currentDate.getFullYear()}
+          onChange={(event) => setYear(Math.trunc(Number(event.target.value)))}
         />
         <PulldownMenu
           itemList={monthList}
-          appendCss={pulldownMenu}
+          appendCss={monthPulldown}
           name={'fullDate'}
           id={'monthList'}
-          defaultValue={month}
-          onChange={() => setMonth(Math.trunc(Number(document.getElementById('monthList').value)))}
+          defaultValue={currentDate.getMonth() + 1}
+          onChange={(event) => setMonth(Math.trunc(Number(event.target.value)))}
         />
         <PulldownMenu
           itemList={dateList}
-          appendCss={pulldownMenu}
+          appendCss={datePulldown}
           name={'fullDate'}
           id={'dateList'}
-          defaultValue={date}
-          onChange={() => setDate(Math.trunc(Number(document.getElementById('dateList').value)))}
+          defaultValue={currentDate.getDate()}
+          onChange={(event) => setDate(Math.trunc(Number(event.target.value)))}
         />
       </label>
-      <p id="fullDateError">{errors.fullDateError}</p>
       <label css={inputLabel} htmlFor="exerciseList">
         種目
         <PulldownMenu
-          itemList={[...exerciseList.map((exercise) => exercise.name)]}
-          appendCss={pulldownMenu}
+          itemList={exerciseList.map((exercise) => exercise.name)}
+          appendCss={exercisePulldown}
           name={'exerciseNameList'}
           id={'exerciseNameList'}
-          onChange={() => setExerciseName(document.getElementById('exerciseNameList').value)}
+          defaultValue={''}
+          onChange={(event) => setExerciseName(event.target.value)}
+          errorMessage={errors.exerciseListError}
         />
       </label>
-      <p id="exerciseListError">{errors.exerciseListError}</p>
     </div>
   );
 };
