@@ -2,15 +2,31 @@
 import { css, jsx } from '@emotion/react';
 import React, { useCallback, useState } from 'react';
 import { HiOutlineAnnotation } from 'react-icons/hi';
+import { COLOR } from '../../../style/constants';
 
 const simpleRecordContainer = css({
   display: 'flex',
-  justifyContent: 'space-between',
 });
+const exerciseStyle = css({
+  width: '75%',
+  marginTop: '1rem',
+  paddingBottom: '1rem',
+  borderBottom: `1px solid ${COLOR.BORDER}`,
+})
 const achievementStyle = css({
-  width: '15%',
+  width: '20%',
   textAlign: 'right',
+  marginTop: '1rem',
+  paddingBottom: '1rem',
+  borderBottom: `1px solid ${COLOR.BORDER}`,
 });
+const annotationStyle = css({
+  width: '10%',
+  textAlign: 'center',
+  marginTop: '1rem',
+  paddingBottom: '1rem',
+  borderBottom: `1px solid ${COLOR.BORDER}`,
+})
 
 export const useSimpleRecordView = () => {
   const [simpleRecordView, setSimpleRecordView] = useState();
@@ -49,9 +65,9 @@ export const useSimpleRecordView = () => {
         const annotation = simpleRecord.existMemo ? <HiOutlineAnnotation /> : null;
         return (
           <div key={i} css={simpleRecordContainer}>
-            <p css={css({ width: '75%' })}>{simpleRecord.exercise}</p>
+            <p css={exerciseStyle}>{simpleRecord.exercise}</p>
             <p css={achievementStyle}>{achievement}</p>
-            <p css={css({ width: '5%' })}>{annotation}</p>
+            <p css={annotationStyle}>{annotation}</p>
           </div>
         );
       }),

@@ -5,23 +5,43 @@ import { MdKeyboardArrowRight, MdDoubleArrow } from 'react-icons/md';
 import { getRecordsBySpecifiedMonth } from '../../api/records';
 import { useCreateDayListView } from './hooks/useCreateDayListView';
 import { useMoveYearMonth } from './hooks/useMoveYearMonth';
+import { COLOR } from '../../style/constants';
 
-const moveNext = css({
-  height: '15px',
-  width: '15px',
-});
+const navigation = css({
+  display: 'flex',
+  alignItems: 'center',
+  marginBottom: '1rem'
+})
 const movePrev = css(moveNext, {
+  height: '2.5rem',
+  width: '2.5rem',
+  marginRight: '1rem',
   transform: 'rotate(180deg)',
+  '&:hover': {
+    cursor: 'pointer'
+  }
 });
+const moveNext = css({
+  height: '2.5rem',
+  width: '2.5rem',
+  marginLeft: '1rem',
+  '&:hover': {
+    cursor: 'pointer'
+  }
+});
+const yearMonth = css({
+  fontSize: '3rem'
+})
 const weekDayContainer = css({
   display: 'flex',
 });
 const weekDays = css({
   width: '14%',
+  marginLeft: '-1px',
   textAlign: 'center',
   backgroundColor: 'transparent',
-  border: 'solid 0.1rem lightgray',
-  borderBottom: 'solid 0.1rem lightgray',
+  border: `solid 0.5px ${COLOR.BORDER}`,
+  borderBottom: `solid 0.5px ${COLOR.BORDER}`,
   textDecoration: 'none',
 });
 const daysContainer = css({
@@ -73,10 +93,10 @@ export const TrainingCalendar = ({ setDailyRecordList, setSelectedDate, modifyCo
 
   return (
     <div>
-      <div id="navigationContainer">
+      <div id="navigationContainer" css={navigation}>
         <MdDoubleArrow id="prevYear" css={movePrev} onClick={() => moveToPrevYear()} />
         <MdKeyboardArrowRight id="prevMonth" css={movePrev} onClick={() => moveToPrevMonth()} />
-        <span id="selectedYearMonth">{selectedYearMonth}</span>
+        <span id="selectedYearMonth" css={yearMonth}>{selectedYearMonth}</span>
         <MdKeyboardArrowRight id="nextMonth" css={moveNext} onClick={() => moveToNextMonth()} />
         <MdDoubleArrow id="nextYear" css={moveNext} onClick={() => moveToNextYear()} />
       </div>

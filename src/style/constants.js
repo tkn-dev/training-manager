@@ -1,5 +1,7 @@
 export const COLOR = {
-  BORDER: 'rgba(0,0,0,0.2)'
+  BORDER: 'rgba(0,0,0,0.2)',
+  SCROLL_THUMB: '#bdc1c6',
+  SCROLL_TRACK: '#dadce0'
 }
 
 export const HOVER = {

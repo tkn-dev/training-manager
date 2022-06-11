@@ -19,9 +19,8 @@ const container = css({
 const formContainer = css({
   display: 'flex',
   flexWrap: 'wrap',
-  height: '100%',
-  maxHeight: '38rem',
-  width: '100%',
+  height: '39rem',
+  width: '60rem',
   marginTop: '1rem',
   marginLeft: '3rem',
   overflowY: 'scroll',

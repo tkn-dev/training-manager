@@ -29,9 +29,12 @@ const modal = css({
   bottom: '0',
   right: '0',
   left: '0',
-  height: '500px',
+  height: '60rem',
   width: '60%',
   margin: 'auto',
+  paddingTop: '1rem',
+  paddingBottom: '1rem',
+  paddingLeft: '1rem',
   backgroundColor: 'white',
   borderRadius: '2%',
 });
@@ -39,12 +42,10 @@ const formContainer = css({
   display: 'flex',
   flexWrap: 'nowrap',
   flexDirection: 'column',
-  height: '350px',
+  height: '40rem',
   width: '100%',
-  marginTop: '10px',
-  overflow: 'scroll',
-  borderTop: 'solid 1.5px lightgray',
-  borderBottom: 'solid 1.5px lightgray',
+  paddingTop: '1rem',
+  overflowY: 'scroll',
 });
 const formControllerContainer = css({
   display: 'flex',
@@ -53,6 +54,14 @@ const formControllerContainer = css({
 });
 const anaerobicFormContainer = css({
   width: '100%',
+});
+const anaerobicFormLabel = css({
+  marginBottom: '1.5rem',
+  fontSize: '1.2rem',
+});
+const submit = css({
+  marginTop: '1.5rem',
+  width: '7rem',
 });
 
 export const EditTrainingRecordModal = ({
@@ -90,7 +99,7 @@ export const EditTrainingRecordModal = ({
       const setNum = i + 1;
       return (
         <div key={setNum} css={anaerobicFormContainer}>
-          <h2>{`セット${setNum}`}</h2>
+          <h2 css={anaerobicFormLabel}>{`セット${setNum}`}</h2>
           <AnaerobicRecordForm
             setNum={setNum}
             refs={{
@@ -160,7 +169,6 @@ export const EditTrainingRecordModal = ({
               event.stopPropagation();
             }}
           >
-            <h2>記録編集</h2>
             <SelectExerciseForm
               currentDate={new Date(editTargetRecord.exercise_date)}
               exerciseList={[{ name: editTargetRecord.exercise }]}
@@ -186,6 +194,7 @@ export const EditTrainingRecordModal = ({
               />
             </div>
             <Submit
+              value='更新'
               onClick={async () => {
                 setError();
                 setCurtValueList(getCurtValueList());
@@ -206,6 +215,7 @@ export const EditTrainingRecordModal = ({
                   return;
                 }
               }}
+              appendCss={submit}
             />
           </section>
         </div>

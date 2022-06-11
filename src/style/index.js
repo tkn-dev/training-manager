@@ -1,4 +1,5 @@
 import { css } from '@emotion/react';
+import { COLOR } from './constants';
 
 export const index = css`
   html {
@@ -25,5 +26,20 @@ export const index = css`
 
   #root {
     height: 100%;
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  ::-webkit-scrollbar-track {
+    border-radius: 10px;
+    background: ${COLOR.SCROLL_TRACK};
+  }
+
+  ::-webkit-scrollbar-thumb {
+    border: none;
+    border-radius: 10px;
+    background: ${COLOR.SCROLL_THUMB}
   }
 `;

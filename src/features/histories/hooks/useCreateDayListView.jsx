@@ -3,11 +3,14 @@ import { css, jsx } from '@emotion/react';
 import React, { useCallback, useEffect, useState } from 'react';
 import { BsClipboardCheck } from 'react-icons/bs';
 import { zeroPadding } from '../../../util/zeroPadding';
+import { COLOR } from '../../../style/constants';
 
 const days = css({
-  height: '45px',
+  height: '6rem',
   width: '14%',
-  border: 'solid 0.1rem lightgray',
+  marginLeft: '-1px',
+  marginTop: '-1px',
+  border: `solid 1px ${COLOR.BORDER}`,
   backgroundColor: 'transparent',
   lineHeight: '1.6',
 });
@@ -16,8 +19,8 @@ const subDays = css(days, {
 });
 const clipboardCheck = (isVisible) =>
   css({
-    height: '15px',
-    width: '15px',
+    height: '1.5rem',
+    width: '1.5rem',
     visibility: isVisible ? 'visible' : 'hidden',
     color: 'green',
   });

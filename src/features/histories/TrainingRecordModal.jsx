@@ -5,6 +5,7 @@ import { deleteRecord } from '../../api/records';
 import { AlertDialog } from '../../components/elements/notification/AlertDialog';
 import { EditTrainingRecordModal } from './EditTrainingRecordModal';
 import { useRecordSummary } from './hooks/useRecordSummary';
+import { COLOR } from '../../style/constants';
 
 const overlay = css({
   position: 'fixed',
@@ -22,21 +23,28 @@ const modal = css({
   bottom: '0',
   right: '0',
   left: '0',
-  height: '600px',
-  width: '75%',
+  height: '60rem',
+  width: '55rem',
   margin: 'auto',
   backgroundColor: 'white',
   borderRadius: '2%',
 });
+const date = css({
+  height: '4rem',
+  paddingTop: '1rem',
+  paddingBottom: '1rem',
+  paddingLeft: '1rem',
+  borderBottom: `1px solid ${COLOR.BORDER}`,
+  fontSize: '2rem',
+  fontWeight: 'normal'
+})
 const recordSummaryContainer = css({
   display: 'flex',
   flexWrap: 'nowrap',
   flexDirection: 'column',
-  height: '570px',
-  marginTop: '10px',
-  overflow: 'scroll',
-  borderTop: 'solid 1.5px lightgray',
-  borderBottom: 'solid 1.5px lightgray',
+  height: '56rem',
+  paddingTop: '1rem',
+  overflowY: 'scroll',
 });
 
 export const TrainingRecordModal = ({
@@ -91,7 +99,7 @@ export const TrainingRecordModal = ({
               event.stopPropagation();
             }}
           >
-            <h2>{selectedDate}</h2>
+            <h2 css={date}>{selectedDate}</h2>
             <div css={recordSummaryContainer}>{recordSummary}</div>
           </section>
         </div>
