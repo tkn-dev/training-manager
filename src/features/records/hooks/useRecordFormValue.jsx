@@ -106,7 +106,7 @@ export const useRecordFormValue = () => {
           errors['set1'].exerciseTimeError = '時間を入力してください。';
           errors.count++;
         }
-        if (record['set1'].memo.length > 200) {
+        if (record['set1'].memo && record['set1'].memo.length > 200) {
           errors['set1'].memoError = 'メモは200文字までです。';
           errors.count++;
         }
@@ -122,7 +122,7 @@ export const useRecordFormValue = () => {
             errors[`set${i}`].repetitionError = '回数を入力してください。';
             errors.count++;
           }
-          if (record[`set${i}`].memo.length > 200) {
+          if (record[`set${i}`].memo && record[`set${i}`].memo.length > 200) {
             errors[`set${i}`].memoError = 'メモは200文字までです。';
             errors.count++;
           }
