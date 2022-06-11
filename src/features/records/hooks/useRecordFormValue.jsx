@@ -106,6 +106,10 @@ export const useRecordFormValue = () => {
           errors['set1'].exerciseTimeError = '時間を入力してください。';
           errors.count++;
         }
+        if (record['set1'].memo.length > 200) {
+          errors['set1'].memoError = 'メモは200文字までです。';
+          errors.count++;
+        }
       }
 
       if (!record.is_aerobic) {
@@ -116,6 +120,10 @@ export const useRecordFormValue = () => {
           }
           if (!record[`set${i}`].repetition) {
             errors[`set${i}`].repetitionError = '回数を入力してください。';
+            errors.count++;
+          }
+          if (record[`set${i}`].memo.length > 200) {
+            errors[`set${i}`].memoError = 'メモは200文字までです。';
             errors.count++;
           }
         }
