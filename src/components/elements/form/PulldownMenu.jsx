@@ -46,7 +46,7 @@ export const PulldownMenu = ({
   return (
     <FormControl css={container(appendCss)} error={errorMessage ? true : false}>
       <Select
-        ref={refs.selectRef}
+        inputRef={refs.selectRef}
         css={pulldownMenuStyle}
         name={name}
         id={id}

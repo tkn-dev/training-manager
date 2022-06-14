@@ -77,7 +77,7 @@ export const AnaerobicRecordForm = ({ setNum, errors = {}, refs = {} }) => {
         <FormGroup css={isAerobicForm}>
           <FormControlLabel
             css={isAerobicLabel}
-            control={<Switch id={`support${setNum}`} ref={refs.supportRef} />}
+            control={<Switch id={`support${setNum}`} inputRef={refs.supportRef} />}
             label="補助"
             labelPlacement="start"
           />

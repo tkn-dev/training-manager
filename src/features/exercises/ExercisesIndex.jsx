@@ -26,7 +26,7 @@ export const ExercisesIndex = () => {
     const res = await postExercise(exercise);
     setMessage(res.message);
     updateList();
-    if (res.status !== '201') openDialog();
+    openDialog();
     return res;
   });
 
