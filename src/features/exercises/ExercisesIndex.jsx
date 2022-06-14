@@ -1,8 +1,14 @@
+/** @jsx jsx */
+import { css, jsx } from '@emotion/react';
 import React, { useState, useCallback, useEffect } from 'react';
 import { CreateExercise } from './CreateExercise';
 import { ShowExercises } from './ShowExercises';
 import { getExercises, postExercise, deleteExercise } from '../../api/exercises';
 import { AlertDialog } from '../../components/elements/notification/AlertDialog';
+
+const container = css({
+  maxWidth: '100rem',
+});
 
 export const ExercisesIndex = () => {
   const [open, setOpen] = useState(false);
@@ -42,7 +48,7 @@ export const ExercisesIndex = () => {
   }, []);
 
   return (
-    <section>
+    <section css={container}>
       <CreateExercise onSubmit={insertExercise} />
       <ShowExercises exerciseList={exerciseList} onDelete={removeExercise} />
       <AlertDialog open={open} title={message} onClose={closeDialog} onAgree={closeDialog} />

@@ -1,6 +1,12 @@
+/** @jsx jsx */
+import { css, jsx } from '@emotion/react';
 import React, { useState } from 'react';
 import { TrainingCalendar } from './TrainingCalendar';
 import { DailySimpleTrainingRecord } from './DailySimpleTrainingRecord';
+
+const container = css({
+  maxWidth: '100rem',
+});
 
 export const HistoriesIndex = () => {
   const [dailyRecordList, setDailyRecordList] = useState([]);
@@ -9,7 +15,7 @@ export const HistoriesIndex = () => {
   const incrementModifyCount = () => setModifyCount((prev) => prev + 1);
 
   return (
-    <div>
+    <div css={container}>
       <TrainingCalendar
         setDailyRecordList={setDailyRecordList}
         setSelectedDate={setSelectedDate}
