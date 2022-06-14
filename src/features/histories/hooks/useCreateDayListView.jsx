@@ -82,7 +82,7 @@ export const useCreateDayListView = (year, month, recordList, onSelectDate) => {
         dayStyle = days;
       } else {
         // 次月
-        date = i - prevMonthEnd - startingWeekDay + 2;
+        date = i - selectedMonthEnd - startingWeekDay + 2;
         fullDate = `${nextYearMonth}-${zeroPadding(date, 2)}`;
         dayStyle = subDays;
       }
