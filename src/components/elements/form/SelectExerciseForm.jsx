@@ -99,7 +99,7 @@ export const SelectExerciseForm = ({
           appendCss={exercisePulldown}
           name={'exerciseNameList'}
           id={'exerciseNameList'}
-          defaultValue={''}
+          defaultValue={exerciseList[0].name}
           onChange={(event) => setExerciseName(event.target.value)}
           errorMessage={errors.exerciseListError}
         />

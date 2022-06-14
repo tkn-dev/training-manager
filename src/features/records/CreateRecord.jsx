@@ -134,7 +134,7 @@ export const CreateRecord = ({ exerciseList = [], onSubmit = (f) => f }) => {
     <div css={container}>
       <SelectExerciseForm
         currentDate={new Date()}
-        exerciseList={exerciseList}
+        exerciseList={[{ name: '' }, ...exerciseList]}
         errors={errors}
         setFullDate={(fullDate) => setRecordFormValue({ exercise_date: fullDate })}
         setExerciseName={(exerciseName) => setRecordFormValue({ exercise: exerciseName })}

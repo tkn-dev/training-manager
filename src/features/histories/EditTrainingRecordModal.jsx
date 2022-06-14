@@ -123,7 +123,10 @@ export const EditTrainingRecordModal = ({
       exercise_date: editTargetRecord.exercise_date,
       exercise: editTargetRecord.exercise,
       is_aerobic: editTargetRecord.Exercise.is_aerobic,
-      set_number: editTargetRecord.maxSetNum,
+      set_number:
+        recordFormValues.exercise == editTargetRecord.exercise
+          ? recordFormValues.set_number
+          : editTargetRecord.maxSetNum,
     });
     if (editTargetRecord.Exercise.is_aerobic) {
       setRecordForm(
@@ -194,7 +197,7 @@ export const EditTrainingRecordModal = ({
               />
             </div>
             <Submit
-              value='更新'
+              value="更新"
               onClick={async () => {
                 setError();
                 setCurtValueList(getCurtValueList());
