@@ -21,7 +21,10 @@ router.post('/get/specified-month', (req, res) => {
           [Op.between]: [`${req.body.prevYearMonth}-26`, `${req.body.nextYearMonth}-14`],
         },
       },
-      order: [['recorded_at', 'ASC']],
+      order: [
+        ['recorded_at', 'ASC'],
+        ['set_number', 'ASC'],
+      ],
     })
     .then((rows) => {
       res.status(200);
