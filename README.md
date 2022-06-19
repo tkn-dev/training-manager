@@ -2,7 +2,8 @@
   - https://training-manager-211213.herokuapp.com/exercises<br>
 
 ## このサービスは？<br>
-  日々の筋トレの記録を管理するアプリ「ToreMo(トレモ)」。<br>
+  日々の筋トレの記録を管理するアプリ。<br>
+  「ToreMo(トレモ)」という名前は「トレーニングメモ」の略称。
   主な機能は以下の3つ。<br>
     -　トレーニング種目の登録<br>
     -　記録の入力<br>
