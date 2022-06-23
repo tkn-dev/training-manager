@@ -16,5 +16,5 @@
   DB : MySQL<br>
   インフラ : Heroku<br>
   ソースコード管理 : GitHub<br>
-  その他 : Visual Studio Code, prettier, eslint, webpack, Google Fonts<br>
+  その他 : Emotion, Sequelize, VSCode, Prettier, ESLint, webpack, Google Fonts<br>
   
